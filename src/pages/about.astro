@@ -1,0 +1,55 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<MainLayout title="About">
+  <Header slot="header" />
+  
+  <section class="about">
+    <h1>About Me</h1>
+    <div class="content">
+      <p>Hi, I'm Roman Golev, a software developer with a passion for technology and innovation.</p>
+      
+      <h2>Skills & Expertise</h2>
+      <ul>
+        <li>Frontend Development: React, Vue.js, JavaScript/TypeScript</li>
+        <li>Backend Development: Node.js, Python</li>
+        <li>DevOps: Docker, CI/CD, Cloud Services</li>
+      </ul>
+
+      <h2>Experience</h2>
+      <p>With several years of experience in software development, I've worked on various projects ranging from web applications to automation solutions.</p>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</MainLayout>
+
+<style>
+  .about {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+    margin: 2rem 0 1rem;
+  }
+
+  .content {
+    line-height: 1.6;
+  }
+
+  ul {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+  }
+</style> 

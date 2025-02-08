@@ -1,0 +1,78 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+
+const navItems = [
+  { label: "Home", href: "/" },
+  { label: "Projects", href: "/projects" },
+  { label: "Blog", href: "/blog" },
+  { label: "About", href: "/about" },
+];
+---
+
+<header>
+  <nav class="nav-container">
+    <div class="logo">
+      <a href="/">Roman Golev</a>
+    </div>
+    <div class="nav-right">
+      <ul class="nav-links">
+        {
+          navItems.map((item) => (
+            <li>
+              <a href={item.href}>{item.label}</a>
+            </li>
+          ))
+        }
+      <ThemeToggle />
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<style>
+  header {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    padding: 1rem;
+  }
+
+  .nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .logo a {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 1rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-links a {
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .nav-links a:hover {
+    color: var(--color-text);
+  }
+
+  @media (max-width: 768px) {
+    .nav-links {
+      gap: var(--spacing-md);
+    }
+  }
+</style> 
