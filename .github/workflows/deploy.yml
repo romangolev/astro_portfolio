@@ -9,7 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+        with:
+          persist-credentials: false 
+          
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -23,11 +25,12 @@ jobs:
         
       - name: Push changes
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-             git config --global user.name "GitHub Actions"
-             git config --global user.email "actions@github.com"
-             git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
-             git add .
-             git commit -m "Deploy to GitHub Pages"
-             git push origin gh-pages
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git remote add origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
+          git checkout -b gh-pages || git checkout gh-pages
+          git add .
+          git commit -m "Deploy to GitHub Pages" || echo "No changes to commit"
+          git push origin gh-pages
