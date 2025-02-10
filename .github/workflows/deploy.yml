@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           persist-credentials: false 
-          
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -21,7 +21,7 @@ jobs:
         run: npm ci
         
       - name: Build website
-        run: npm run build
+        run: astro build --site=https://romangolev.github.io/astro_portfolio/
         
       - name: Push changes
         env:
