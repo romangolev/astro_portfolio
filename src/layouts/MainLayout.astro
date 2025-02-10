@@ -16,20 +16,38 @@ const { title } = Astro.props;
     </script>
   </head>
   <body>
-    <div class="container">
+    <div class="page-container">
       <slot name="header" />
-      <main>
+      <main class="content">
         <slot />
       </main>
-      <slot name="footer" />
+      <footer class="footer">
+        <slot name="footer" />
+      </footer>
     </div>
   </body>
 </html>
 
 <style>
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
+  body, html {
+    height: 100%;
+    margin: 0;
+  }
+
+  .page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .content {
+    flex: 1;
+  }
+
+  .footer {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    padding: 1rem;
+    text-align: center;
   }
 </style>

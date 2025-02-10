@@ -1,38 +1,55 @@
 ---
+import SunIcon from './icons/SunIcon.astro';
+import MoonIcon from './icons/MoonIcon.astro';
 ---
+
 <button
   id="themeToggle"
-  class="inline-flex items-center justify-center w-8 h-8 rounded-lg transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
+  class="theme-toggle-button"
   aria-label="Toggle theme"
 >
-  <svg 
-    width="24" 
-    height="24" 
-    class="sun"
-  >
-    <path
-      fill="currentColor"
-      d="M12 18C8.68629 18 6 15.3137 6 12C6 8.68629 8.68629 6 12 6C15.3137 6 18 8.68629 18 12C18 15.3137 15.3137 18 12 18ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16ZM11 1H13V4H11V1ZM11 20H13V23H11V20ZM3.51472 4.92893L4.92893 3.51472L7.05025 5.63604L5.63604 7.05025L3.51472 4.92893ZM16.9497 18.364L18.364 16.9497L20.4853 19.0711L19.0711 20.4853L16.9497 18.364ZM19.0711 3.51472L20.4853 4.92893L18.364 7.05025L16.9497 5.63604L19.0711 3.51472ZM5.63604 16.9497L7.05025 18.364L4.92893 20.4853L3.51472 19.0711L5.63604 16.9497ZM23 11V13H20V11H23ZM4 11V13H1V11H4Z"
-    />
-  </svg>
-  <svg 
-    width="24" 
-    height="24" 
-    class="moon"
-  >
-    <path
-      fill="currentColor"
-      d="M10 7C10 10.866 13.134 14 17 14C18.9584 14 20.729 13.1957 22 11.8995C21.3608 16.4923 17.3716 20 12.5 20C7.25329 20 3 15.7467 3 10.5C3 5.62837 6.50772 1.63923 11.1005 1C9.80433 2.27097 9 4.04157 9 6C9 6.33384 9.02413 6.66183 9.07101 6.98288C9.02412 6.66183 9 6.33384 9 6C9 6.33384 9.02413 6.66183 9.07101 6.98288C9.55713 6.36048 10.2159 5.86325 10.9741 5.53226C10.3359 5.98789 9.81105 6.57792 9.45459 7.26191C9.49082 7.17482 9.53015 7.08911 9.57253 7.00489C9.53015 7.08911 9.49082 7.17482 9.45459 7.26191C9.81105 6.57792 10.3359 5.98789 10.9741 5.53226C10.6431 5.69688 10.3354 5.90285 10.0571 6.14595C10.3354 5.90285 10.6431 5.69688 10.9741 5.53226C10.2159 5.86325 9.55713 6.36048 9.07101 6.98288C9.02413 6.66183 9 6.33384 9 6C9 4.04157 9.80433 2.27097 11.1005 1C6.50772 1.63923 3 5.62837 3 10.5C3 15.7467 7.25329 20 12.5 20C17.3716 20 21.3608 16.4923 22 11.8995C20.729 13.1957 18.9584 14 17 14C13.134 14 10 10.866 10 7Z"
-    />
-  </svg>
+  <span class="icon sun-icon"><SunIcon /></span>
+  <span class="icon moon-icon"><MoonIcon /></span>
 </button>
 
 <style>
-  .sun { display: block; }
-  .moon { display: none; }
+  .theme-toggle-button {
+    background: none;
+    border: none;
+    color: var(--color-text);
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s ease, background-color 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+  }
 
-  :global(.dark) .sun { display: none; }
-  :global(.dark) .moon { display: block; }
+  .theme-toggle-button:hover {
+    background-color: var(--color-bg-hover);
+    color: var(--color-accent);
+  }
+
+  .icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    display: none;
+  }
+
+  .moon-icon {
+    display: inline;
+  }
+
+  :global(.dark) .moon-icon {
+    display: none;
+  }
+
+  :global(.dark) .sun-icon {
+    display: inline;
+  }
 </style>
 
 <script>
@@ -48,7 +65,7 @@
     const setTheme = (theme: 'light' | 'dark') => {
       html.classList.toggle('dark', theme === 'dark');
       localStorage.setItem('theme', theme);
-      console.log(`Theme set to: ${theme}`); // Debugging log
+      // console.log(`Theme set to: ${theme}`); // Debugging log
     };
 
     const currentTheme = (localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')) as 'light' | 'dark';
