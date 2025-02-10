@@ -5,7 +5,8 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://www.romangolev.com',
+  base: '/astro_portfolio/',
+  // site: 'https://www.romangolev.com',
   integrations: [],
 
   vite: {

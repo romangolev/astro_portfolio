@@ -22,6 +22,9 @@ jobs:
         
       - name: Build website
         run: astro build --site=https://romangolev.github.io/astro_portfolio/
+
+      - name: Disable Jekyll
+        run: touch dist/.nojekyll
         
       - name: Push changes
         env:
