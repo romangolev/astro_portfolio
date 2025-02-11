@@ -2,13 +2,11 @@
 import MainLayout from '../layouts/MainLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const baseUrl = import.meta.env.BASE_URL || '';
 ---
 
 <MainLayout title="Home">
-	<Header slot="header" />
+	<Header baseUrl={baseUrl} slot="header" />
 	
 	<section class="hero">
 		<h1>Developer & Technology Enthusiast</h1>

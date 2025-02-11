@@ -1,18 +1,19 @@
 ---
 import ThemeToggle from '../components/ThemeToggle.astro';
 
+const { baseUrl } = Astro.props;
 const navItems = [
-  { label: "Home", href: "/" },
-  { label: "Projects", href: "/projects" },
-  { label: "Blog", href: "/blog" },
-  { label: "About", href: "/about" },
+  { label: "Home", href: `${baseUrl}` },
+  { label: "Projects", href: `${baseUrl}projects` },
+  { label: "Blog", href: `${baseUrl}blog` },
+  { label: "About", href: `${baseUrl}about` },
 ];
 ---
 
 <header class="header">
   <nav class="nav-container">
     <div class="logo">
-      <a href="/">Roman Golev</a>
+      <a href={`${baseUrl}/`}>Roman Golev</a>
     </div>
     <div class="nav-right">
       <ul class="nav-links">
@@ -94,4 +95,4 @@ const navItems = [
       gap: var(--spacing-md);
     }
   }
-</style> 
+</style>

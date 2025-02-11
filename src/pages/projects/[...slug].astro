@@ -2,6 +2,7 @@
 import MainLayout from '../../layouts/MainLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+const baseUrl = import.meta.env.BASE_URL || '';
 
 export async function getStaticPaths() {
   // You can fetch your projects from a data source or markdown files
@@ -28,7 +29,7 @@ const { project } = Astro.props;
 ---
 
 <MainLayout title={project.title}>
-  <Header slot="header" />
+  <Header baseUrl={baseUrl} slot="header" />
   
   <article class="project">
     <h1>{project.title}</h1>

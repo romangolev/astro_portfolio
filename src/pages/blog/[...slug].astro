@@ -2,6 +2,7 @@
 import MainLayout from '../../layouts/MainLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+const baseUrl = import.meta.env.BASE_URL || '';
 
 export async function getStaticPaths() {
   // You can fetch your blog posts from markdown files or a CMS
@@ -27,7 +28,7 @@ const { post } = Astro.props;
 ---
 
 <MainLayout title={post.title}>
-  <Header slot="header" />
+  <Header baseUrl={baseUrl} slot="header" />
   
   <article class="blog-post">
     <h1>{post.title}</h1>

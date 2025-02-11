@@ -10,6 +10,8 @@ export default defineConfig({
   integrations: [],
 
   vite: {
-    plugins: [tailwindcss()],
+    define: {
+      'import.meta.env.BASE_URL': JSON.stringify('/astro_portfolio/'),
+    },
   },
 });

@@ -3,6 +3,7 @@ import MainLayout from '../../layouts/MainLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
+const baseUrl = import.meta.env.BASE_URL || '';
 
 const projects = [
   {
@@ -16,7 +17,7 @@ const projects = [
 ---
 
 <MainLayout title="Projects">
-  <Header slot="header" />
+  <Header baseUrl={baseUrl} slot="header" />
   
   <section class="projects">
     <h1>Projects</h1>
