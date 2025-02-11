@@ -30,10 +30,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          git remote add origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
+          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          git fetch origin
           git checkout -b gh-pages || git checkout gh-pages
+          rsync -av --delete dist/ .
           git add .
           git commit -m "Deploy to GitHub Pages" || echo "No changes to commit"
           git push origin gh-pages
