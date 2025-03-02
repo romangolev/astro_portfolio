@@ -1,19 +1,34 @@
 ---
+import { getPath } from '../utils/paths';
 import ThemeToggle from '../components/ThemeToggle.astro';
 
-const { baseUrl } = Astro.props;
+// Debug information
+console.log('Environment mode:', import.meta.env.MODE);
+console.log('Base URL from env:', import.meta.env.PUBLIC_BASE_URL);
+console.log('Site URL from env:', import.meta.env.SITE);
+console.log('Development mode:', import.meta.env.DEV);
+console.log('Production mode:', import.meta.env.PROD);
+
+// You can also log custom environment variables
+console.log('Custom env variable:', import.meta.env.PUBLIC_CUSTOM_VARIABLE);
+
 const navItems = [
-  { label: "Home", href: `${baseUrl}` },
-  { label: "Projects", href: `${baseUrl}projects` },
-  { label: "Blog", href: `${baseUrl}blog` },
-  { label: "About", href: `${baseUrl}about` },
+  { label: "Home", href: getPath('/') },
+  { label: "Projects", href: getPath('projects') },
+  { label: "Blog", href: getPath('blog') },
+  { label: "About", href: getPath('about') },
 ];
+
+// Debug the paths
+navItems.forEach(item => {
+  console.log(`Path for ${item.label}:`, item.href);
+});
 ---
 
 <header class="header">
   <nav class="nav-container">
     <div class="logo">
-      <a href={`${baseUrl}/`}>Roman Golev</a>
+      <a href={getPath('/')}>Roman Golev</a>
     </div>
     <div class="nav-right">
       <ul class="nav-links">

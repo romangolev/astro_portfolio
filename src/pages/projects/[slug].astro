@@ -1,0 +1,113 @@
+---
+import { getCollection } from 'astro:content';
+import MainLayout from '../../layouts/MainLayout.astro';
+
+// Generate paths for all projects
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map(project => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await project.render();
+---
+
+<MainLayout title={project.data.title}>
+  <article class="project">
+    <header>
+      <h1>{project.data.title}</h1>
+      <p class="date">{project.data.date.toLocaleDateString()}</p>
+      <div class="technologies">
+        {project.data.technologies.map((tech) => (
+          <span class="tech-tag">{tech}</span>
+        ))}
+      </div>
+    </header>
+    
+    {project.data.image && (
+      <img 
+        src={project.data.image} 
+        alt={project.data.title} 
+        class="project-image"
+      />
+    )}
+    
+    <div class="content">
+      <Content />
+    </div>
+    
+    <div class="links">
+      {project.data.github && (
+        <a href={project.data.github} target="_blank" rel="noopener noreferrer">
+          GitHub Repository
+        </a>
+      )}
+      {project.data.demo && (
+        <a href={project.data.demo} target="_blank" rel="noopener noreferrer">
+          Live Demo
+        </a>
+      )}
+    </div>
+  </article>
+</MainLayout>
+
+<style>
+  .project {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .date {
+    color: var(--color-text-secondary);
+    margin-bottom: 1rem;
+  }
+  
+  .technologies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .tech-tag {
+    background-color: var(--color-bg-tag);
+    color: var(--color-text-tag);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+  }
+  
+  .project-image {
+    width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .content {
+    line-height: 1.6;
+  }
+  
+  .links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  
+  .links a {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: var(--color-accent);
+    color: white;
+    text-decoration: none;
+    border-radius: 0.25rem;
+    transition: background-color 0.2s ease;
+  }
+  
+  .links a:hover {
+    background-color: var(--color-accent-dark);
+  }
+</style> 

@@ -1,17 +1,26 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import dotenv from 'dotenv';
 
-import tailwindcss from '@tailwindcss/vite';
+// Load environment variables
+dotenv.config();
+
+// Determine if we're in a GitHub Pages environment
+const isGitHubPages = process.env.GITHUB_ACTIONS === 'true';
+const basePath = isGitHubPages ? '/astro_portfolio/' : '/';
+
+console.log("Base path for config:", basePath);
 
 // https://astro.build/config
 export default defineConfig({
-  base: '/astro_portfolio/',
+  base: basePath,
   // site: 'https://www.romangolev.com',
   integrations: [],
 
-  vite: {
-    define: {
-      'import.meta.env.BASE_URL': JSON.stringify('/astro_portfolio/'),
+  markdown: {
+    shikiConfig: {
+      // Choose the theme for syntax highlighting
+      theme: 'github-dark',
     },
   },
 });

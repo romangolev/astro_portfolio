@@ -1,29 +1,32 @@
 ---
+import { getCollection } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
 const baseUrl = import.meta.env.BASE_URL || '';
 
-const projects = [
-  {
-    slug: 'project-1',
-    title: 'Project 1',
-    description: 'Description of project 1',
-    technologies: ['React', 'Node.js']
-  },
-  // Add more projects here
-];
+const projects = await getCollection('projects');
+// Sort projects by date (newest first)
+projects.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---
 
 <MainLayout title="Projects">
   <Header baseUrl={baseUrl} slot="header" />
   
   <section class="projects">
-    <h1>Projects</h1>
+    <h1>My Projects</h1>
     <div class="projects-grid">
       {projects.map((project) => (
-        <ProjectCard project={project} />
+        <ProjectCard 
+          project={{
+            title: project.data.title,
+            description: project.data.description,
+            technologies: project.data.technologies,
+            slug: project.slug,
+            image: project.data.image,
+          }} 
+        />
       ))}
     </div>
   </section>
@@ -43,7 +46,7 @@ const projects = [
 
   .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 2rem;
   }
 

@@ -16,14 +16,12 @@ const { title } = Astro.props;
     </script>
   </head>
   <body>
-    <div class="page-container">
+    <div class="container">
       <slot name="header" />
-      <main class="content">
+      <main>
         <slot />
       </main>
-      <footer class="footer">
-        <slot name="footer" />
-      </footer>
+      <slot name="footer" />
     </div>
   </body>
 </html>

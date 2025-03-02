@@ -1,95 +1,110 @@
 ---
+import { getCollection } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
-const baseUrl = import.meta.env.BASE_URL || '';
 
-const posts = [
-  {
-    slug: 'first-post',
-    title: 'First Blog Post',
-    date: '2024-03-20',
-    excerpt: 'A brief excerpt from the first blog post...'
-  },
-  // Add more posts here
-];
+const baseUrl = import.meta.env.BASE_URL || '';
+const posts = await getCollection('blog');
+// Sort posts by date (newest first)
+posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---
 
 <MainLayout title="Blog">
   <Header baseUrl={baseUrl} slot="header" />
-  
-  <section class="blog">
-    <h1>Blog</h1>
-    <div class="posts">
-      {posts.map((post) => (
-        <article class="post-card">
+  <h1>Blog Posts</h1>
+  <div class="posts-grid">
+    {posts.map((post) => (
+      <article class="post-card">
+        {post.data.image && (
+          <img 
+            src={post.data.image} 
+            alt={post.data.title} 
+            class="post-image"
+          />
+        )}
+        <div class="post-content">
           <h2>
-            <a href={`/blog/${post.slug}`}>{post.title}</a>
+            <a href={`/blog/${post.slug}`}>{post.data.title}</a>
           </h2>
-          <time datetime={post.date}>
-            {new Date(post.date).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            })}
-          </time>
-          <p>{post.excerpt}</p>
-          <a href={`/blog/${post.slug}`} class="read-more">Read More</a>
-        </article>
-      ))}
-    </div>
-  </section>
-
+          <p class="date">{post.data.date.toLocaleDateString()}</p>
+          <p class="description">{post.data.description}</p>
+          <div class="tags">
+            {post.data.tags.map((tag) => (
+              <span class="tag">{tag}</span>
+            ))}
+          </div>
+        </div>
+      </article>
+    ))}
+  </div>
   <Footer slot="footer" />
 </MainLayout>
 
 <style>
-  .blog {
-    padding: 2rem 0;
-  }
-
-  h1 {
-    font-size: 2.5rem;
-    margin-bottom: 2rem;
-  }
-
-  .posts {
+  .posts-grid {
     display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 2rem;
-    max-width: 800px;
-    margin: 0 auto;
   }
-
+  
   .post-card {
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .post-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .post-content {
     padding: 1.5rem;
-    border: 1px solid #eaeaea;
-    border-radius: 8px;
   }
-
-  h2 a {
-    color: #000;
+  
+  .post-content h2 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+  }
+  
+  .post-content h2 a {
+    color: var(--color-text);
     text-decoration: none;
   }
-
-  h2 a:hover {
-    text-decoration: underline;
+  
+  .post-content h2 a:hover {
+    color: var(--color-accent);
   }
-
-  time {
-    color: #666;
-    display: block;
-    margin: 0.5rem 0;
+  
+  .date {
+    color: var(--color-text-secondary);
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
   }
-
-  .read-more {
-    display: inline-block;
-    margin-top: 1rem;
-    color: #000;
-    text-decoration: none;
-    font-weight: 500;
+  
+  .description {
+    margin-bottom: 1rem;
   }
-
-  .read-more:hover {
-    text-decoration: underline;
+  
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .tag {
+    background-color: var(--color-bg-tag);
+    color: var(--color-text-tag);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
   }
 </style> 
