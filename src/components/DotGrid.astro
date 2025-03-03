@@ -96,8 +96,8 @@
         const isDark = document.documentElement.classList.contains('dark');
         dots.forEach(dot => {
           dot.element.style.backgroundColor = isDark 
-            ? 'rgba(255, 255, 255, 0.5)' 
-            : 'rgba(0, 0, 0, 0.5)';
+            ? 'rgba(200, 200, 200, 0.2)' 
+            : 'rgba(80, 80, 80, 0.2)';
         });
       }
     });
@@ -134,10 +134,10 @@
   }
 
   :global(.dark) .dot {
-    background-color: rgba(255, 255, 255, 0.5) !important;
+    background-color: rgba(200, 200, 200, 0.2) !important;
   }
 
   :global(.light) .dot {
-    background-color: rgba(0, 0, 0, 0.5) !important;
+    background-color: rgba(80, 80, 80, 0.2) !important;
   }
 </style> 
