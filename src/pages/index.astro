@@ -2,66 +2,55 @@
 import MainLayout from '../layouts/MainLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-const baseUrl = import.meta.env.BASE_URL || '';
 ---
 
 <MainLayout title="Home">
-	<Header baseUrl={baseUrl} slot="header" />
-	
-	<section class="hero">
-		<h1>Developer & Technology Enthusiast</h1>
-		<p>Building digital experiences with modern web technologies.</p>
-	</section>
+  <Header slot="header" />
+  
+  <section class="hero">
+    <h1>Developer & Technology Enthusiast</h1>
+    <p>Building digital experiences with modern web technologies.</p>
+  </section>
 
-	<section class="featured">
-		<div class="grid">
-			<div class="featured-item">
-				<h2>Development</h2>
-				<p>Creating efficient and scalable solutions for web applications.</p>
-			</div>
-			<div class="featured-item">
-				<h2>Technologies</h2>
-				<p>Working with modern frameworks and tools to build better experiences.</p>
-			</div>
-		</div>
-	</section>
+  <section class="featured">
+    <div class="grid">
+      <div class="featured-item">
+        <h2>Development</h2>
+        <p>Creating efficient and scalable solutions for web applications.</p>
+      </div>
+      <div class="featured-item">
+        <h2>Technologies</h2>
+        <p>Working with modern frameworks and tools to build better experiences.</p>
+      </div>
+    </div>
+  </section>
 
-	<Footer slot="footer" />
+  <Footer slot="footer" />
 </MainLayout>
 
 <style>
-	.hero {
-		padding: var(--spacing-xl) 0;
-		max-width: 38rem;
-	}
+  .about {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
 
-	.hero h1 {
-		font-size: 2.5rem;
-		margin-bottom: var(--spacing-md);
-		line-height: 1.2;
-	}
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+  }
 
-	.hero p {
-		font-size: 1.25rem;
-		color: var(--color-text-secondary);
-	}
+  h2 {
+    font-size: 1.8rem;
+    margin: 2rem 0 1rem;
+  }
 
-	.featured {
-		padding: var(--spacing-xl) 0;
-	}
+  .content {
+    line-height: 1.6;
+  }
 
-	.grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-		gap: var(--spacing-xl);
-	}
-
-	.featured-item h2 {
-		font-size: 1.5rem;
-		margin-bottom: var(--spacing-md);
-	}
-
-	.featured-item p {
-		color: var(--color-text-secondary);
-	}
-</style>
+  ul {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+  }
+</style> 

@@ -1,0 +1,81 @@
+---
+import MainLayout from './MainLayout.astro';
+import Giscus from '../components/Giscus.astro';
+
+const { frontmatter } = Astro.props;
+---
+
+<MainLayout title={frontmatter.title}>
+  <article class="post">
+    <header>
+      <h1>{frontmatter.title}</h1>
+      <div class="metadata">
+        <time datetime={frontmatter.date.toISOString()}>
+          {new Date(frontmatter.date).toLocaleDateString()}
+        </time>
+        {frontmatter.tags && (
+          <div class="tags">
+            {frontmatter.tags.map((tag: string) => (
+              <span class="tag">{tag}</span>
+            ))}
+          </div>
+        )}
+      </div>
+    </header>
+
+    <div class="content">
+      <slot />
+    </div>
+
+    <Giscus />
+  </article>
+</article>
+
+<style>
+  .post {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  header {
+    margin-bottom: 2rem;
+  }
+
+  h1 {
+    margin-bottom: 0.5rem;
+    font-size: 2.5rem;
+  }
+
+  .metadata {
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+  }
+
+  .tags {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .tag {
+    background-color: var(--color-bg-tag);
+    color: var(--color-text-tag);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.8rem;
+  }
+
+  .content {
+    line-height: 1.6;
+  }
+
+  .content :global(h2) {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .content :global(p) {
+    margin-bottom: 1.5rem;
+  }
+</style>

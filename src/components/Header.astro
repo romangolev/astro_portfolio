@@ -2,20 +2,10 @@
 import { getPath } from '../utils/paths';
 import ThemeToggle from '../components/ThemeToggle.astro';
 
-// Debug information
-console.log('Environment mode:', import.meta.env.MODE);
-console.log('Base URL from env:', import.meta.env.PUBLIC_BASE_URL);
-console.log('Site URL from env:', import.meta.env.SITE);
-console.log('Development mode:', import.meta.env.DEV);
-console.log('Production mode:', import.meta.env.PROD);
-
-// You can also log custom environment variables
-console.log('Custom env variable:', import.meta.env.PUBLIC_CUSTOM_VARIABLE);
-
 const navItems = [
   { label: "Home", href: getPath('/') },
   { label: "Projects", href: getPath('projects') },
-  { label: "Blog", href: getPath('blog') },
+  { label: "Posts", href: getPath('posts') },
   { label: "About", href: getPath('about') },
 ];
 

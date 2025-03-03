@@ -9,7 +9,7 @@ export function getPath(path) {
   
   // Use different base paths for development and production
   let basePath;
-  if (isDev == 'true'){
+  if (isDev == true){
      //console.log("dev");
      basePath = '';
   } else {
