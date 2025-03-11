@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import MainLayout from '../../layouts/MainLayout.astro';
+import ProjectLayout from '../../layouts/ProjectLayout.astro';
 
 // Generate paths for all projects
 export async function getStaticPaths() {
@@ -15,44 +15,16 @@ const { project } = Astro.props;
 const { Content } = await project.render();
 ---
 
-<MainLayout title={project.data.title}>
-  <article class="project">
-    <header>
-      <h1>{project.data.title}</h1>
-      <p class="date">{project.data.date.toLocaleDateString()}</p>
-      <div class="technologies">
-        {project.data.technologies.map((tech) => (
-          <span class="tech-tag">{tech}</span>
-        ))}
-      </div>
-    </header>
-    
-    {project.data.image && (
-      <img 
-        src={project.data.image} 
-        alt={project.data.title} 
-        class="project-image"
-      />
-    )}
-    
-    <div class="content">
-      <Content />
-    </div>
-    
-    <div class="links">
-      {project.data.github && (
-        <a href={project.data.github} target="_blank" rel="noopener noreferrer">
-          GitHub Repository
-        </a>
-      )}
-      {project.data.demo && (
-        <a href={project.data.demo} target="_blank" rel="noopener noreferrer">
-          Live Demo
-        </a>
-      )}
-    </div>
-  </article>
-</MainLayout>
+<ProjectLayout
+  title={project.data.title}
+  description={project.data.description}
+  pubDate={project.data.pubDate}
+  technologies={project.data.technologies}
+  github={project.data.github}
+  live={project.data.live}
+>
+  <Content />
+</ProjectLayout>
 
 <style>
   .project {

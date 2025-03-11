@@ -1,0 +1,189 @@
+---
+import MainLayout from './MainLayout.astro';
+import Giscus from '../components/Giscus.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  pubDate?: Date;
+  technologies?: string[];
+  github?: string;
+  live?: string;
+}
+
+const { 
+  title, 
+  description, 
+  pubDate,
+  technologies = [],
+  github,
+  live
+} = Astro.props;
+
+const formattedDate = pubDate?.toLocaleDateString('en-us', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+---
+
+<MainLayout title={title}>
+  <article class="project-container">
+    <div class="project-header">
+      <h1>{title}</h1>
+      {description && <p class="description">{description}</p>}
+      
+      <div class="project-meta">
+        {formattedDate && (
+          <div class="date">
+            Published: {formattedDate}
+          </div>
+        )}
+        
+        {technologies.length > 0 && (
+          <div class="technologies">
+            {technologies.map(tech => (
+              <span class="tech-tag">{tech}</span>
+            ))}
+          </div>
+        )}
+
+        <div class="project-links">
+          {github && (
+            <a href={github} target="_blank" rel="noopener noreferrer" class="project-link github">
+              GitHub
+            </a>
+          )}
+          {live && (
+            <a href={live} target="_blank" rel="noopener noreferrer" class="project-link live">
+              Live Demo
+            </a>
+          )}
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <slot />
+    </div>
+
+    <Giscus />
+  </article>
+</MainLayout>
+
+<style>
+  .project-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  .project-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    margin: 0 0 1rem 0;
+    color: var(--color-text);
+  }
+
+  .description {
+    font-size: 1.2rem;
+    color: var(--color-text-secondary);
+    margin: 1rem 0;
+  }
+
+  .project-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 1rem;
+  }
+
+  .date {
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+  }
+
+  .technologies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tech-tag {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text);
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .project-links {
+    display: flex;
+    gap: 1rem;
+    margin-left: auto;
+  }
+
+  .project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+
+  .github {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text);
+  }
+
+  .live {
+    background-color: var(--color-accent);
+    color: white;
+  }
+
+  .project-link:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+  }
+
+  .content {
+    line-height: 1.6;
+    color: var(--color-text);
+  }
+
+  .content :global(h2) {
+    margin: 2rem 0 1rem;
+    font-size: 1.8rem;
+  }
+
+  .content :global(p) {
+    margin: 1rem 0;
+  }
+
+  .content :global(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+    margin: 1.5rem 0;
+  }
+
+  @media (max-width: 768px) {
+    .project-meta {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .project-links {
+      margin-left: 0;
+    }
+  }
+</style> 
