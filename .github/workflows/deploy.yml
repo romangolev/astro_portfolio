@@ -30,6 +30,9 @@ jobs:
       - name: Disable Jekyll
         run: touch dist/.nojekyll
 
+      - name: Preserve Custom Domain
+        run: echo 'www.romangolev.com' > dist/CNAME  # This ensures the CNAME file is included
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
