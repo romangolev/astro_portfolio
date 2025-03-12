@@ -25,7 +25,7 @@ jobs:
         run: npm install -g astro@latest
 
       - name: Build website
-        run: astro build --site=https://romangolev.github.io/astro_portfolio/
+        run: astro build --site=https://www.romangolev.com
 
       - name: Disable Jekyll
         run: touch dist/.nojekyll
