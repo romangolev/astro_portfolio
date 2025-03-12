@@ -14,7 +14,8 @@ export function getPath(path) {
      basePath = '';
   } else {
      //console.log("prod");
-     basePath = '/astro_portfolio';
+     basePath = '';
+     //basePath = '/astro_portfolio';
   }
   // Remove leading slash from path if it exists
   const cleanPath = path.startsWith('/') ? path.slice(1) : path;
