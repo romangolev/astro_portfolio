@@ -2,25 +2,37 @@
 import MainLayout from './MainLayout.astro';
 import Giscus from '../components/Giscus.astro';
 
-const { frontmatter } = Astro.props;
+interface Props {
+  title: string;
+  description?: string;
+  pubDate?: Date;
+  updatedDate?: Date;
+  tags?: string[];
+  heroImage?: string;
+}
+
+const { 
+  title = 'Untitled Post',
+  description,
+  pubDate,
+  updatedDate,
+  tags = [],
+  heroImage
+} = Astro.props;
 ---
 
-<MainLayout title={frontmatter.title}>
+<MainLayout title={title}>
   <article class="post">
     <header>
-      <h1>{frontmatter.title}</h1>
-      <div class="metadata">
-        <time datetime={frontmatter.date.toISOString()}>
-          {new Date(frontmatter.date).toLocaleDateString()}
-        </time>
-        {frontmatter.tags && (
-          <div class="tags">
-            {frontmatter.tags.map((tag: string) => (
-              <span class="tag">{tag}</span>
-            ))}
-          </div>
-        )}
-      </div>
+      <h1>{title}</h1>
+      {description && <p class="description">{description}</p>}
+      {pubDate && <time>{pubDate.toLocaleDateString()}</time>}
+      {tags.length > 0 && (
+        <div class="tags">
+          {tags.map(tag => <span class="tag">{tag}</span>)}
+        </div>
+      )}
+      {heroImage && <img src={heroImage} alt={title} />}
     </header>
 
     <div class="content">
@@ -29,7 +41,7 @@ const { frontmatter } = Astro.props;
 
     <Giscus />
   </article>
-</article>
+</MainLayout>
 
 <style>
   .post {

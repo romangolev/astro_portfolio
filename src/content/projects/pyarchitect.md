@@ -1,7 +1,7 @@
 ---
 title: "pyArchitect extension"
 description: "Extension for BIM coordination and architectural design"
-#repo: "romangolev/pyArchitect" # delete this line if you want a blog-like page
+repo: "romangolev/pyArchitect" # delete this line if you want a blog-like page
 tags: ["BIM", "Revit", "pyRevit", "architecture", "design", "Python"]
 weight: 1
 draft: false
@@ -19,6 +19,7 @@ The pyArchitect extension is available under GPL-3.0 license on Github [here](ht
 Main extension itself looks the following way:
 
 Extension has several panels in the tab:
+
 * Main — control panel, information about the extension
 * Coordination — tools for model coordination
 * Finishing — bundle for achetecture interior works

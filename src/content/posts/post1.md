@@ -1,19 +1,22 @@
 ---
-title: "Blog Post Title"
-description: "A short description of the blog post"
-date: 2023-02-20
-tags: ["Web Development", "JavaScript", "Tutorial"]
-image: "/images/post1.jpg"
+title: "Revit C# Multiversion Template Release"
+date: 2024-12-12
+description: "A Visual Studio template for developing Revit add-ins across multiple versions."
+tags: ["BIM", "Revit", "C#", "Development"]
+draft: false
 ---
 
-## Introduction
+## [Revit C# Multiversion Template](https://github.com/romangolev/Revit-Multiversion-Template) Release  
 
-This is the introduction to my blog post. You can use Markdown formatting here.
+Excited to announce the release of the **Revit C# Multiversion Template**, a powerful Visual Studio template that simplifies the development of Revit add-ins across multiple Revit versions (2020–2025).  
 
-### Section 1
+### Key Features 
+ 
+- **Multi-Version Support** – Easily target multiple Revit versions with pre-configured build settings.  
+- **Simplified Setup** – Install the template via Visual Studio Marketplace or directly from GitHub.  
+- **Separated Builds** – Generate distinct DLLs for each Revit version to ensure compatibility.  
+- **Automated Post-Build Actions** – Automatically copy add-in files to the appropriate Revit Addins folder.  
 
-Content for section 1...
+All additional details can be found in the official GitHub release **[here](https://github.com/romangolev/Revit-Multiversion-Template/releases/tag/v1.0.0)**.  
 
-### Section 2
-
-Content for section 2... 
+If you find this tool useful, feel free to **star the repository**, **give feedback**, and **suggest improvements**. Contributions are always welcome! 🚀

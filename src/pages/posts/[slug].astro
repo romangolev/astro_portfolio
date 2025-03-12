@@ -5,17 +5,39 @@ import PostLayout from '../../layouts/PostLayout.astro';
 // Generate static paths for all posts
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
-  return posts.map(post => ({
-    params: { slug: post.slug },
-    props: { post },
-  }));
+  // console.log('Posts data:', posts); // Debug log
+
+  return posts.map(post => {
+    // console.log('Processing post:', post); // Debug log for each post
+    return {
+      params: { slug: post.slug },
+      props: { post },
+    };
+  });
 }
 
 const { post } = Astro.props;
+// console.log('Current post data:', post); // Debug log for current post
+
 const { Content } = await post.render();
+
+// Add null checks
+const title = post?.data?.title ?? 'Untitled Post';
+const description = post?.data?.description;
+const pubDate = post?.data?.pubDate;
+const updatedDate = post?.data?.updatedDate;
+const tags = post?.data?.tags ?? [];
+const heroImage = post?.data?.heroImage;
 ---
 
-<PostLayout frontmatter={post.data}>
+<PostLayout
+  title={title}
+  description={description}
+  pubDate={pubDate}
+  updatedDate={updatedDate}
+  tags={tags}
+  heroImage={heroImage}
+>
   <Content />
 </PostLayout>
 
