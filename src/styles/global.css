@@ -116,3 +116,17 @@ header, footer {
 .nav-links a:hover {
   color: var(--color-text);
 } 
+ul {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+h2 {
+  font-size: 1.8rem;
+  margin: 2rem 0 1rem;
+}

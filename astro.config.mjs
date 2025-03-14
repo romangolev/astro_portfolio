@@ -11,10 +11,8 @@ const basePath = isGitHubPages ? '/astro_portfolio/' : '/';
 
 console.log("Base path for config:", basePath);
 
-// https://astro.build/config
 export default defineConfig({
   base: basePath,
-  // site: 'https://www.romangolev.com',
   integrations: [],
 
   markdown: {
