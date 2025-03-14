@@ -6,25 +6,25 @@ import Footer from '../components/Footer.astro';
 
 <MainLayout title="Home">
   <Header slot="header" />
-  
-  <section class="hero">
-    <h1>Developer & Technology Enthusiast</h1>
-    <p>Building digital experiences with modern web technologies.</p>
-  </section>
+  <section class="about">
+    <section class="hero">
+      <h1>Developer & Technology Enthusiast</h1>
+      <p>Building digital experiences with modern web technologies.</p>
+    </section>
 
-  <section class="featured">
-    <div class="grid">
-      <div class="featured-item">
-        <h2>Development</h2>
-        <p>Creating efficient and scalable solutions for web applications.</p>
+    <section class="featured">
+      <div class="grid">
+        <div class="featured-item">
+          <h2>Development</h2>
+          <p>Creating efficient and scalable solutions for web applications.</p>
+        </div>
+        <div class="featured-item">
+          <h2>Technologies</h2>
+          <p>Working with modern frameworks and tools to build better experiences.</p>
+        </div>
       </div>
-      <div class="featured-item">
-        <h2>Technologies</h2>
-        <p>Working with modern frameworks and tools to build better experiences.</p>
-      </div>
-    </div>
+    </section>
   </section>
-
   <Footer slot="footer" />
 </MainLayout>
 
@@ -33,5 +33,8 @@ import Footer from '../components/Footer.astro';
   .content {
     line-height: 1.6;
   }
-
+  .about {
+    max-width: 800px;
+    margin: 0 auto;
+  }
 </style> 
