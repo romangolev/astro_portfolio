@@ -5,10 +5,8 @@ import PostLayout from '../../layouts/PostLayout.astro';
 // Generate static paths for all posts
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
-  // console.log('Posts data:', posts); // Debug log
 
   return posts.map(post => {
-    // console.log('Processing post:', post); // Debug log for each post
     return {
       params: { slug: post.slug },
       props: { post },
@@ -17,7 +15,6 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-// console.log('Current post data:', post); // Debug log for current post
 
 const { Content } = await post.render();
 
