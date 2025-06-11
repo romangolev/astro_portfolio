@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "build:site": "astro build --site=https://www.romangolev.com",
     "preview": "astro preview",
     "astro": "astro"
   },

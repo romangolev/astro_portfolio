@@ -23,7 +23,7 @@ jobs:
         run: npm ci
 
       - name: Build website
-        run: astro build --site=https://www.romangolev.com
+        run: npm run build:site
 
       - name: Disable Jekyll
         run: touch dist/.nojekyll
