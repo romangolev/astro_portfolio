@@ -21,9 +21,6 @@ jobs:
           
       - name: Install dependencies
         run: npm ci
-        
-      - name: Install Astro
-        run: npm install -g astro@latest
 
       - name: Build website
         run: astro build --site=https://www.romangolev.com
