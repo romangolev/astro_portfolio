@@ -64,18 +64,38 @@ import MoonIcon from './icons/MoonIcon.astro';
 </style>
 
 <script>
+  // Detect system theme preference
+  function getSystemTheme() {
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark';
+    }
+    return 'light';
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
-    const theme = localStorage.getItem('theme') || 'light';
+    // Use stored theme, fallback to system preference
+    const storedTheme = localStorage.getItem('theme');
+    const theme = storedTheme || getSystemTheme();
     document.documentElement.classList.toggle('dark', theme === 'dark');
-    
+
     // Add no-transition class on page load
     document.documentElement.classList.add('no-transition');
-    
+
     // Remove no-transition class after a small delay
     setTimeout(() => {
       document.documentElement.classList.remove('no-transition');
     }, 100);
   });
+
+  // Listen for system theme changes
+  if (window.matchMedia) {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      // Only apply system theme if user hasn't manually set a preference
+      if (!localStorage.getItem('theme')) {
+        document.documentElement.classList.toggle('dark', e.matches);
+      }
+    });
+  }
 
   const handleToggleClick = () => {
     const element = document.documentElement;
