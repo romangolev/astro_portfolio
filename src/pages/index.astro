@@ -6,35 +6,93 @@ import Footer from '../components/Footer.astro';
 
 <MainLayout title="Home">
   <Header slot="header" />
-  <section class="about">
-    <section class="hero">
-      <h1>Developer & Technology Enthusiast</h1>
-      <p>Building digital experiences with modern web technologies.</p>
-    </section>
+  <section class="hero">
+    <h1>Roman Golev</h1>
+    <p class="subtitle">Software Engineer & Fullstack Developer</p>
+    <p class="location">Barcelona, Catalonia, Spain</p>
 
-    <section class="featured">
-      <div class="grid">
-        <div class="featured-item">
-          <h2>Development</h2>
-          <p>Creating efficient and scalable solutions for web applications.</p>
-        </div>
-        <div class="featured-item">
-          <h2>Technologies</h2>
-          <p>Working with modern frameworks and tools to build better experiences.</p>
-        </div>
-      </div>
-    </section>
+    <p class="summary">
+      Adaptable software engineer with a strong background in automation, integration, and problem-solving. Proficient in multiple programming languages and architectural patterns. Passionate about writing maintainable, scalable code.
+    </p>
+
+    <div class="links">
+      <a href="/about">About</a>
+      <a href="/projects">Projects</a>
+      <a href="/posts">Posts</a>
+    </div>
   </section>
   <Footer slot="footer" />
 </MainLayout>
 
 <style>
+  .hero {
+    max-width: 600px;
+    margin: 5rem auto;
+    padding: 0 2rem;
+    text-align: center;
+  }
 
-  .content {
-    line-height: 1.6;
+  h1 {
+    font-size: 3rem;
+    margin: 0 0 0.5rem 0;
+    color: var(--color-text);
   }
-  .about {
-    max-width: 800px;
-    margin: 0 auto;
+
+  .subtitle {
+    font-size: 1.3rem;
+    color: var(--color-accent);
+    margin: 0 0 0.5rem 0;
+    font-weight: 500;
   }
-</style> 
+
+  .location {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    margin: 0 0 1.5rem 0;
+  }
+
+  .summary {
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin: 0 0 2rem 0;
+    font-size: 1rem;
+  }
+
+  .links {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .links a {
+    padding: 0.6rem 1.3rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.4rem;
+    text-decoration: none;
+    color: var(--color-text);
+    transition: all 0.2s ease;
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+
+  .links a:hover {
+    background-color: var(--color-accent);
+    color: white;
+    border-color: var(--color-accent);
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      margin: 3rem auto;
+    }
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+    }
+  }
+</style>

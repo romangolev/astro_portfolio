@@ -6,21 +6,75 @@ import Footer from '../components/Footer.astro';
 
 <MainLayout title="About">
   <Header slot="header" />
-  
+
   <section class="about">
     <h1>About Me</h1>
     <div class="content">
-      <p>Hi, I'm a software developer with a passion for technology and innovation. Experienced engineer with an inclination to backend, keen in solving challenging and complex tasks.</p>
-      
-      <h2>Skills & Expertise</h2>
-      <ul>
-        <li>Frontend Development: React, Vue.js, JavaScript/TypeScript</li>
-        <li>Backend Development: Node.js, Python</li>
-        <li>DevOps: Docker, CI/CD, Cloud Services</li>
+      <p>I'm a Software Engineer who builds sustainable, efficient tools that make design and construction workflows less of a headache. Since I started out as a BIM Engineer, I've seen plenty of AEC pain points up close, and that pushes me to create better, more thoughtful products.</p>
+
+      <h2>Professional Journey</h2>
+      <p>My career has evolved from BIM Coordination to Senior Software Engineering, giving me a unique perspective on both the user needs and technical implementation of AEC solutions.</p>
+
+      <ul class="timeline">
+        <li><strong>Automation Developer</strong> – Building tools to solve repetitive tasks and boost productivity</li>
+        <li><strong>Software Engineer</strong> – Architecting scalable solutions for complex AEC problems</li>
+        <li><strong>Open Source Contributor</strong> – Giving back to the community through libraries and tools</li>
+        <li><strong>BIM Coordinator</strong> – Understanding workflows, pain points, and collaboration challenges</li>
       </ul>
 
-      <h2>Experience</h2>
-      <p>With several years of experience in software development, I've worked on various projects ranging from web applications to automation solutions.</p>
+      <h2>Technical Expertise</h2>
+      <div class="skills-grid">
+        <div class="skill-category">
+          <h3>AEC Software</h3>
+          <p>Autodesk Revit, Navisworks, BIM 360, Tekla – deep knowledge of industry-standard tools and APIs</p>
+        </div>
+        <div class="skill-category">
+          <h3>Backend Development</h3>
+          <p>C#, Python, Node.js – building scalable services with ASP.NET, FastAPI, and Express.js</p>
+        </div>
+        <div class="skill-category">
+          <h3>Frontend Development</h3>
+          <p>React, TypeScript, WPF – creating responsive UIs and desktop applications</p>
+        </div>
+        <div class="skill-category">
+          <h3>DevOps & Infrastructure</h3>
+          <p>Azure, AWS, Docker, GitHub Actions, Nuke.Build – automating builds and deployments</p>
+        </div>
+        <div class="skill-category">
+          <h3>Databases</h3>
+          <p>PostgreSQL, MySQL – designing and optimizing data models for AEC applications</p>
+        </div>
+        <div class="skill-category">
+          <h3>Testing & Quality</h3>
+          <p>Unit Testing, Integration Testing, NUnit, Jest, PyTest – building reliable software</p>
+        </div>
+      </div>
+
+      <h2>What I'm Passionate About</h2>
+      <ul>
+        <li><strong>Problem-Solving</strong> – Tackling complex automation challenges that improve workflows</li>
+        <li><strong>Open Source</strong> – Contributing to tools like pyRevit that empower the AEC community</li>
+        <li><strong>Learning</strong> – Always picking up new technologies and methodologies</li>
+        <li><strong>Quality</strong> – Building sustainable, maintainable code that stands the test of time</li>
+      </ul>
+
+      <h2>Education & Certifications</h2>
+      <ul>
+        <li><strong>University of Helsinki</strong> – Fullstack Development (2025-2026)</li>
+        <li><strong>42 Coding School</strong> – Computer Science (2025)</li>
+        <li><strong>Autodesk Certified Professional</strong> – Revit Architecture & Structure</li>
+        <li><strong>Various Online Certifications</strong> – JavaScript, Python, C#, SQL, Data Science</li>
+      </ul>
+
+      <h2>Languages</h2>
+      <ul>
+        <li><strong>English</strong> – Fluent</li>
+        <li><strong>Spanish</strong> – Working Proficiency</li>
+      </ul>
+
+      <p style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--color-border);">
+        Interested in collaborating? Check out my projects and posts, or reach out through my social links.
+      </p>
     </div>
   </section>
 
@@ -31,9 +85,90 @@ import Footer from '../components/Footer.astro';
   .about {
     max-width: 800px;
     margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .about h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
   }
 
   .content {
-    line-height: 1.6;
+    line-height: 1.7;
+    color: var(--color-text);
   }
-</style> 
+
+  .content p {
+    margin: 1rem 0;
+  }
+
+  .content h2 {
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: var(--color-text);
+    border-bottom: 2px solid var(--color-border);
+    padding-bottom: 0.5rem;
+  }
+
+  .content h3 {
+    font-size: 1.1rem;
+    margin: 0.5rem 0;
+    color: var(--color-accent);
+  }
+
+  .content ul {
+    list-style-position: inside;
+    margin: 1rem 0;
+  }
+
+  .content li {
+    margin: 0.5rem 0;
+    color: var(--color-text-secondary);
+  }
+
+  .timeline {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+  }
+
+  .timeline li {
+    margin: 0.75rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+  }
+
+  .timeline li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .skill-category {
+    padding: 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    background-color: var(--color-bg);
+  }
+
+  .skill-category h3 {
+    margin-top: 0;
+  }
+
+  .skill-category p {
+    margin: 0.5rem 0 0 0;
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+  }
+</style>
