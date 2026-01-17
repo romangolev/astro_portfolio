@@ -1,12 +1,14 @@
 ---
-// Revert to original approach without the utils import
+import BaseCard from './BaseCard.astro';
+
 const { post } = Astro.props;
-// Use direct URL construction as before
-const postUrl = `/posts/${post.slug}`;
 ---
 
-<article class="post-card">
-  <a href={postUrl}>
-    <!-- Post content -->
-  </a>
-</article> 
+<BaseCard
+  title={post.title}
+  description={post.description}
+  date={post.date}
+  url={`/posts/${post.slug}`}
+  image={post.image}
+  tags={post.tags}
+/>
