@@ -40,14 +40,17 @@ const { title, description, date, url, image, tags = [] } = Astro.props;
 <style>
   .card {
     border: 1px solid var(--color-border);
-    border-radius: 0.5rem;
+    border-radius: 0.75rem;
     overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background-color: var(--color-bg);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   }
 
   .card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    border-color: var(--color-accent);
   }
 
   .card-image {
@@ -57,37 +60,41 @@ const { title, description, date, url, image, tags = [] } = Astro.props;
   }
 
   .card-content {
-    padding: 1.5rem;
+    padding: 1.25rem;
   }
 
   .card-content h2 {
     margin: 0 0 0.5rem 0;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
   }
 
   .card-content h2 a {
-    color: var(--color-text);
+    color: var(--color-accent);
     text-decoration: none;
+    transition: color 0.2s ease;
   }
 
   .card-content h2 a:hover {
-    color: var(--color-accent);
+    color: var(--color-text);
   }
 
   time {
     color: var(--color-text-secondary);
-    font-size: 0.9rem;
+    font-size: 0.85rem;
   }
 
   .description {
-    margin: 1rem 0;
+    margin: 0.75rem 0;
     color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
   }
 
   .tags {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
+    margin-top: 1rem;
   }
 
   .tag {
