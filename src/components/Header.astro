@@ -35,7 +35,12 @@ navItems.forEach(item => {
 
 <style>
   .header {
-    background-color: var(--color-bg);
+    position: relative;
+    z-index: 2;
+    background-color: var(--color-bg-glass);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-bottom: 1px solid var(--color-border-glass);
     color: var(--color-text);
     padding: 1rem;
   }

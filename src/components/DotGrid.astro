@@ -79,7 +79,7 @@
       
       const waveInfluence = Math.sin(time + dot.phase + dot.x / 100 + dot.y / 100) * 0.5 + 0.5;
       let targetScale = 0.2 + waveInfluence * 0.6;
-      
+
       if (distance < maxDistance) {
         const hoverScale = 1 - (distance / maxDistance);
         targetScale = 0.2 + hoverScale * 2.0;
@@ -98,8 +98,8 @@
       if (mutation.attributeName === 'class') {
         const isDark = document.documentElement.classList.contains('dark');
         dots.forEach(dot => {
-          dot.element.style.backgroundColor = isDark 
-            ? 'rgba(200, 200, 200, 0.15)' 
+          dot.element.style.backgroundColor = isDark
+            ? 'rgba(200, 200, 200, 0.15)'
             : 'rgba(80, 80, 80, 0.15)';
         });
       }
