@@ -14,7 +14,9 @@
   container.innerHTML = '';
   dots = [];
   
-  const numRows = Math.ceil(window.innerHeight / dotSpacing);
+  const pageHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight, window.innerHeight);
+  container.style.height = `${pageHeight}px`;
+  const numRows = Math.ceil(pageHeight / dotSpacing);
   const numCols = Math.ceil(window.innerWidth / dotSpacing);
   
   const isDark = document.documentElement.classList.contains('dark');
@@ -51,8 +53,8 @@
 }
 
   document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
+    mouseX = e.clientX + window.scrollX;
+    mouseY = e.clientY + window.scrollY;
   });
 
   document.addEventListener('mouseleave', () => {
@@ -115,11 +117,11 @@
 
 <style>
   .dot-container {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh;
+    height: 100%;
     z-index: 0;
     pointer-events: none;
     overflow: hidden;
