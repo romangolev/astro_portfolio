@@ -1,12 +1,12 @@
 ---
 title: "Building the New pyRevit C# Loader"
-date: 2026-05-06
+date: 2026-05-17
 description: "A complete rewrite of the pyRevit loader in modern C#, bringing type safety, better memory management, and faster startup times across all Revit versions."
 tags: ["pyRevit", "C#", "Revit", "BIM", "Open Source"]
 draft: false
 ---
 
-The original pyRevit loader was built in Python. While it worked, loading extensions into Revit had limitations in startup time, memory usage, and type safety. The pyRevit team decided to build a modern C# implementation — and I took on significant parts of this work.
+The original pyRevit loader was built on **IronPython** — a .NET implementation of Python 2.7. While it worked for years, IronPython carried real constraints: slow interpreted startup, heavy reflection-based .NET interop, no access to the modern Python ecosystem, and configuration mistakes that only surfaced at runtime inside Revit. The pyRevit team decided to build a modern C# implementation — and I took on significant parts of this work.
 
 ## Key Improvements
 
@@ -63,6 +63,19 @@ Raw `sessionmgr` log values — 5 extensions: 22.169921875 s vs 25.0004119873 s;
 
 The advantage **scales with extension count**: the gap widens from ~11% at 5 extensions to ~20% (≈6.5 s) at 9 extensions — the C# loader stays consistently faster and degrades far more gracefully as installations grow.
 
+## Battle-Tested: The Regression Suite
+
+A rewrite this large only ships safely with tests behind it. The new loader is backed by a dedicated NUnit 4 test project (`pyRevitExtensionParserTester`) with broad coverage:
+
+- Bundle and component parsing, control IDs, and metadata
+- ComboBox members, icons (including dark-mode), and panel backgrounds
+- Help files and help URLs, hooks, localization, and multiline titles
+- C#, Dynamo, and CPython script handling
+- Extension manager / authorization, version filtering, and environment seeding
+- Targeted regression tests that lock in previously-fixed bugs (e.g. pyRevitRoot resolution ordering)
+
+The suite multi-targets **.NET Framework 4.8 and .NET 8**, so behavior is verified on both the legacy framework (older Revit) and modern .NET (Revit 2025+).
+
 ## Technical Details
 
 The rewrite brings:
@@ -70,5 +83,12 @@ The rewrite brings:
 - **Memory management** — Better assembly caching
 - **Consistent API** — Unified across versions
 - **Faster startup** — Every Revit session now starts faster
+- **Multi-targeted** — One codebase for .NET Framework 4.8 and .NET 8 Revit
+- **Localized** — Multilanguage UI strings with multiline title and docstring parsing
+- **Engine-agnostic** — Cleanly drives IronPython, CPython, C#, and Dynamo scripts
+
+## Built With LLM Assistance
+
+This rewrite leaned heavily on AI-assisted development. **Claude Opus with a large context window** was the primary coding model. Holding large slices of the new loader, the legacy IronPython implementation, and the Revit API in context at once made it practical to port behavior faithfully, reason across hundreds of files in a single pass, and keep the C# implementation aligned with the legacy semantics it had to replace.
 
 Big thanks to the pyRevit team for trusting me with this major component. This represents thousands of hours of work across multiple contributors.
