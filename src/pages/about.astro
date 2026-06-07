@@ -7,7 +7,7 @@ import Footer from '../components/Footer.astro';
 <MainLayout title="About">
   <Header slot="header" />
 
-  <section class="about">
+  <section class="about glass-panel">
     <h1>About Me</h1>
     <div class="content">
       <p>I'm a Software Engineer who builds sustainable, efficient tools that make design and construction workflows less of a headache. Since I started out as a BIM Engineer, I've seen plenty of AEC pain points up close, and that pushes me to create better, more thoughtful products.</p>
@@ -24,27 +24,27 @@ import Footer from '../components/Footer.astro';
 
       <h2>Technical Expertise</h2>
       <div class="skills-grid">
-        <div class="skill-category">
+        <div class="skill-category glass-panel">
           <h3>AEC Software</h3>
           <p>Autodesk Revit, Navisworks, BIM 360, Tekla – deep knowledge of industry-standard tools and APIs</p>
         </div>
-        <div class="skill-category">
+        <div class="skill-category glass-panel">
           <h3>Backend Development</h3>
           <p>C#, Python, Node.js – building scalable services with ASP.NET, FastAPI, and Express.js</p>
         </div>
-        <div class="skill-category">
+        <div class="skill-category glass-panel">
           <h3>Frontend Development</h3>
           <p>React, TypeScript, WPF – creating responsive UIs and desktop applications</p>
         </div>
-        <div class="skill-category">
+        <div class="skill-category glass-panel">
           <h3>DevOps & Infrastructure</h3>
           <p>Azure, AWS, Docker, GitHub Actions, Nuke.Build – automating builds and deployments</p>
         </div>
-        <div class="skill-category">
+        <div class="skill-category glass-panel">
           <h3>Databases</h3>
           <p>PostgreSQL, MySQL – designing and optimizing data models for AEC applications</p>
         </div>
-        <div class="skill-category">
+        <div class="skill-category glass-panel">
           <h3>Testing & Quality</h3>
           <p>Unit Testing, Integration Testing, NUnit, Jest, PyTest – building reliable software</p>
         </div>
@@ -85,7 +85,7 @@ import Footer from '../components/Footer.astro';
   .about {
     max-width: 800px;
     margin: 0 auto;
-    padding: 0 2rem;
+    padding: 2rem;
   }
 
   .about h1 {
@@ -157,9 +157,6 @@ import Footer from '../components/Footer.astro';
 
   .skill-category {
     padding: 1.25rem;
-    border: 1px solid var(--color-border);
-    border-radius: 0.75rem;
-    background-color: var(--color-bg);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   }

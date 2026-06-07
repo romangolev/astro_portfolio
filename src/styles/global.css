@@ -37,7 +37,7 @@
   --color-text-tag: #ffffff;
 
   /* Glass effect */
-  --color-bg-glass: rgba(241, 242, 244, 0.25);
+  --color-bg-glass: rgba(241, 242, 244, 0.1);
   --color-border-glass: rgba(128, 128, 128, 0.15);
 }
 
@@ -50,7 +50,7 @@
   --color-bg-hover: #2a2a2a;
   --color-bg-tag: #6f6f6f;
   --color-text-tag: #e0e0e0;
-  --color-bg-glass: rgba(26, 26, 26, 0.25);
+  --color-bg-glass: rgba(26, 26, 26, 0.1);
   --color-border-glass: rgba(128, 128, 128, 0.2);
 }
 
@@ -107,6 +107,16 @@ img {
 header, footer {
   color: var(--color-text);
   padding: 1rem;
+}
+
+/* Glass underlay — same treatment as the header, footer and cards so text
+   stays readable over the animated background. */
+.glass-panel {
+  background-color: var(--color-bg-glass);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid var(--color-border-glass);
+  border-radius: 0.75rem;
 }
 
 .nav-links {

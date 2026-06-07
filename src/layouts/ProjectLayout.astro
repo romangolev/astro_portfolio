@@ -28,7 +28,7 @@ const formattedDate = pubDate?.toLocaleDateString('en-us', {
 ---
 
 <MainLayout title={title}>
-  <article class="project-container">
+  <article class="project-container glass-panel">
     <div class="project-header">
       <h1>{title}</h1>
       {description && <p class="description">{description}</p>}
@@ -74,8 +74,8 @@ const formattedDate = pubDate?.toLocaleDateString('en-us', {
 <style>
   .project-container {
     max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem 1rem;
+    margin: 2rem auto;
+    padding: 2rem;
   }
 
   .project-header {
