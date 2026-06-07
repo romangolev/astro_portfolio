@@ -15,7 +15,7 @@ navItems.forEach(item => {
 });
 ---
 
-<header class="header">
+<header class="header glass-panel">
   <nav class="nav-container">
     <div class="logo">
       <a href={getPath('/')}>Roman Golev</a>
@@ -37,12 +37,12 @@ navItems.forEach(item => {
   .header {
     position: relative;
     z-index: 2;
-    background-color: var(--color-bg-glass);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    border-bottom: 1px solid var(--color-border-glass);
     color: var(--color-text);
     padding: 1rem;
+    /* Keep the full-width bar shape; glass fill/refraction comes from .glass-panel */
+    border: none;
+    border-bottom: 1px solid var(--color-border-glass);
+    border-radius: 0;
   }
 
   .nav-container {

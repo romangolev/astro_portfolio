@@ -20,7 +20,7 @@ const socialLinks = [
 ];
 ---
 
-<footer class="footer">
+<footer class="footer glass-panel">
   <div class="footer-content">
     <div class="social-links">
       {socialLinks.map((link) => (
@@ -44,13 +44,13 @@ const socialLinks = [
     flex-shrink: 0;
     position: relative;
     z-index: 2;
-    background-color: var(--color-bg-glass);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    border-top: 1px solid var(--color-border-glass);
     color: var(--color-text);
     padding: 2rem 1rem;
     margin-top: auto;
+    /* Keep the full-width bar shape; glass fill/refraction comes from .glass-panel */
+    border: none;
+    border-top: 1px solid var(--color-border-glass);
+    border-radius: 0;
   }
 
   .footer-content {
