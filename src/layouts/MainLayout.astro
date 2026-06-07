@@ -1,7 +1,7 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import DotGrid from '../components/DotGrid.astro';
+import FaultyTerminal from '../components/FaultyTerminal/FaultyTerminal.jsx';
 import '../styles/global.css';
 
 const { title } = Astro.props;
@@ -21,7 +21,28 @@ const { title } = Astro.props;
     </script>
   </head>
   <body>
-    <DotGrid />
+    <div class="bg-faulty-terminal">
+      <FaultyTerminal
+        client:only="react"
+        scale={1.5}
+        gridMul={[2, 1]}
+        digitSize={1.2}
+        timeScale={0.5}
+        pause={false}
+        scanlineIntensity={0.4}
+        glitchAmount={1}
+        flickerAmount={1}
+        noiseAmp={1}
+        chromaticAberration={0}
+        dither={0}
+        curvature={0.1}
+        tint="#A7EF9E"
+        mouseReact={true}
+        mouseStrength={0.4}
+        pageLoadAnimation={true}
+        brightness={0.55}
+      />
+    </div>
     <div class="site-wrapper">
       <Header />
       <main class="main-content">
@@ -33,6 +54,20 @@ const { title } = Astro.props;
 </html>
 
 <style>
+  .bg-faulty-terminal {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Dark mode keeps the native green-on-black terminal.
+     Light mode inverts the luminance (black -> white) while preserving the
+     hue, so dark page text stays readable over a light background. */
+  :global(html:not(.dark)) .bg-faulty-terminal {
+    filter: invert(1) hue-rotate(180deg);
+  }
+
   .site-wrapper {
     display: flex;
     flex-direction: column;

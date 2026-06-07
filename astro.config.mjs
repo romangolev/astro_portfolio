@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import react from '@astrojs/react';
 // import dotenv from 'dotenv';
 
 // // Load environment variables
@@ -13,7 +14,7 @@ import { defineConfig } from 'astro/config';
 
 export default defineConfig({
   base: '',
-  integrations: [],
+  integrations: [react()],
 
   markdown: {
     shikiConfig: {
