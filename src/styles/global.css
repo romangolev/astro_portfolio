@@ -40,6 +40,10 @@
   /* Glass effect — fully transparent like dark mode, frostiness from blur */
   --color-bg-glass: rgba(255, 255, 255, 0.06);
   --color-border-glass: rgba(255, 255, 255, 0.5);
+
+  /* Background dot field — darker/denser on the light surface for contrast */
+  --dot-gradient-from: rgba(21, 128, 61, 0.55);
+  --dot-gradient-to: rgba(31, 41, 55, 0.45);
 }
 
 .dark {
@@ -54,6 +58,10 @@
   --color-text-tag: #cfe0ff;
   --color-bg-glass: rgba(21, 19, 26, 0.06);
   --color-border-glass: rgba(255, 255, 255, 0.16);
+
+  /* Background dot field — soft purple glow reads well on the dark surface */
+  --dot-gradient-from: rgba(168, 85, 247, 0.35);
+  --dot-gradient-to: rgba(180, 151, 207, 0.25);
 }
 
 /* Add smooth transitions to all elements */

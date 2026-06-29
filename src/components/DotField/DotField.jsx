@@ -19,6 +19,9 @@ const DotField = memo(({
   glowColor = '#120F17',
   ...rest
 }) => {
+  // Theme-driven colors override the props when the CSS variables are present,
+  // so the dots stay legible on both the light and dark surfaces.
+  const colorsRef = useRef({ from: gradientFrom, to: gradientTo });
   const canvasRef = useRef(null);
   const svgRef = useRef(null);
   const glowRef = useRef(null);
@@ -40,6 +43,25 @@ const DotField = memo(({
     const ctx = canvas.getContext('2d', { alpha: true });
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     let resizeTimer;
+
+    function syncColors() {
+      const styles = getComputedStyle(canvas);
+      const from = styles.getPropertyValue('--dot-gradient-from').trim();
+      const to = styles.getPropertyValue('--dot-gradient-to').trim();
+      colorsRef.current = {
+        from: from || propsRef.current.gradientFrom,
+        to: to || propsRef.current.gradientTo,
+      };
+    }
+
+    syncColors();
+
+    // The theme is toggled via a `dark` class on <html>; re-read on that change.
+    const themeObserver = new MutationObserver(syncColors);
+    themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
 
     function resize() {
       clearTimeout(resizeTimer);
@@ -133,8 +155,8 @@ const DotField = memo(({
       ctx.clearRect(0, 0, w, h);
 
       const grad = ctx.createLinearGradient(0, 0, w, h);
-      grad.addColorStop(0, p.gradientFrom);
-      grad.addColorStop(1, p.gradientTo);
+      grad.addColorStop(0, colorsRef.current.from);
+      grad.addColorStop(1, colorsRef.current.to);
       ctx.fillStyle = grad;
 
       const cr = p.cursorRadius;
@@ -219,6 +241,7 @@ const DotField = memo(({
       cancelAnimationFrame(rafRef.current);
       clearInterval(speedInterval);
       clearTimeout(resizeTimer);
+      themeObserver.disconnect();
       window.removeEventListener('resize', resize);
       window.removeEventListener('mousemove', onMouseMove);
     };
