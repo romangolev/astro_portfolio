@@ -82,8 +82,8 @@ const DotField = memo(({
       sizeRef.current = {
         w,
         h,
-        offsetX: rect.left + window.scrollX,
-        offsetY: rect.top + window.scrollY,
+        offsetX: rect.left,
+        offsetY: rect.top,
       };
 
       buildDots(w, h);
@@ -111,8 +111,8 @@ const DotField = memo(({
 
     function onMouseMove(e) {
       const s = sizeRef.current;
-      mouseRef.current.x = e.pageX - s.offsetX;
-      mouseRef.current.y = e.pageY - s.offsetY;
+      mouseRef.current.x = e.clientX - s.offsetX;
+      mouseRef.current.y = e.clientY - s.offsetY;
     }
 
     function updateMouseSpeed() {
