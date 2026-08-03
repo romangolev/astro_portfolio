@@ -28,4 +28,7 @@ pnpm-debug.log*
 !.env.example
 
 #claude
-.claude/  
+.claude/ 
+
+# playwright test artifacts
+.playwright-mcp/

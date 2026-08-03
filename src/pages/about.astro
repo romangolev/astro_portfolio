@@ -157,14 +157,19 @@ import Footer from '../components/Footer.astro';
 
   .skill-category {
     padding: 1.25rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   }
 
   .skill-category:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    box-shadow: var(--glass-inset), var(--glass-shadow-hover);
     border-color: var(--color-accent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .skill-category:hover {
+      transform: none;
+    }
   }
 
   .skill-category h3 {

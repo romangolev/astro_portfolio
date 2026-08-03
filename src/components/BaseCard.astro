@@ -38,15 +38,24 @@ const { title, description, date, url, image, tags = [] } = Astro.props;
 </article>
 
 <style>
-  .card {
+  /* Doubled selector so the card fill wins over .glass-panel regardless of
+     whether component styles are emitted before or after global.css. */
+  .card.glass-panel {
+    background-color: var(--glass-fill-card);
     overflow: hidden;
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   }
 
   .card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    box-shadow: var(--glass-inset), var(--glass-shadow-hover);
     border-color: var(--color-accent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card:hover {
+      transform: none;
+    }
   }
 
   .card-image {
