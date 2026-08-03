@@ -7,9 +7,9 @@ import Footer from '../components/Footer.astro';
 <MainLayout title="About">
   <Header slot="header" />
 
-  <section class="about glass-panel">
+  <section class="about">
     <h1>About Me</h1>
-    <div class="content">
+    <div class="content glass-panel">
       <p>I'm a Software Engineer who builds sustainable, efficient tools that make design and construction workflows less of a headache. Since I started out as a BIM Engineer, I've seen plenty of AEC pain points up close, and that pushes me to create better, more thoughtful products.</p>
 
       <h2>Professional Journey</h2>
@@ -24,27 +24,27 @@ import Footer from '../components/Footer.astro';
 
       <h2>Technical Expertise</h2>
       <div class="skills-grid">
-        <div class="skill-category glass-panel">
+        <div class="skill-category glass-panel glass-panel--card">
           <h3>AEC Software</h3>
           <p>Autodesk Revit, Navisworks, BIM 360, Tekla – deep knowledge of industry-standard tools and APIs</p>
         </div>
-        <div class="skill-category glass-panel">
+        <div class="skill-category glass-panel glass-panel--card">
           <h3>Backend Development</h3>
           <p>C#, Python, Node.js – building scalable services with ASP.NET, FastAPI, and Express.js</p>
         </div>
-        <div class="skill-category glass-panel">
+        <div class="skill-category glass-panel glass-panel--card">
           <h3>Frontend Development</h3>
           <p>React, TypeScript, WPF – creating responsive UIs and desktop applications</p>
         </div>
-        <div class="skill-category glass-panel">
+        <div class="skill-category glass-panel glass-panel--card">
           <h3>DevOps & Infrastructure</h3>
           <p>Azure, AWS, Docker, GitHub Actions, Nuke.Build – automating builds and deployments</p>
         </div>
-        <div class="skill-category glass-panel">
+        <div class="skill-category glass-panel glass-panel--card">
           <h3>Databases</h3>
           <p>PostgreSQL, MySQL – designing and optimizing data models for AEC applications</p>
         </div>
-        <div class="skill-category glass-panel">
+        <div class="skill-category glass-panel glass-panel--card">
           <h3>Testing & Quality</h3>
           <p>Unit Testing, Integration Testing, NUnit, Jest, PyTest – building reliable software</p>
         </div>
@@ -82,12 +82,14 @@ import Footer from '../components/Footer.astro';
 </MainLayout>
 
 <style>
+  /* Matches .posts and .projects so page titles line up across the site. */
   .about {
     max-width: 800px;
     margin: 0 auto;
     padding: 2rem;
   }
 
+  /* The page title sits on the background; only the body copy gets a panel. */
   .about h1 {
     font-size: 2rem;
     margin-bottom: 1.5rem;
@@ -96,6 +98,11 @@ import Footer from '../components/Footer.astro';
   .content {
     line-height: 1.7;
     color: var(--color-text);
+    padding: 2rem;
+  }
+
+  .content > *:first-child {
+    margin-top: 0;
   }
 
   .content p {

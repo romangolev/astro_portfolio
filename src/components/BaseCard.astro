@@ -11,7 +11,7 @@ interface Props {
 const { title, description, date, url, image, tags = [] } = Astro.props;
 ---
 
-<article class="card glass-panel">
+<article class="card glass-panel glass-panel--card">
   {image && (
     <img
       src={image}
@@ -38,10 +38,8 @@ const { title, description, date, url, image, tags = [] } = Astro.props;
 </article>
 
 <style>
-  /* Doubled selector so the card fill wins over .glass-panel regardless of
-     whether component styles are emitted before or after global.css. */
-  .card.glass-panel {
-    background-color: var(--glass-fill-card);
+  /* Fill comes from .glass-panel--card in global.css. */
+  .card {
     overflow: hidden;
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   }

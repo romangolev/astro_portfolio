@@ -38,23 +38,22 @@
   --color-text-tag: #ffffff;
 
   /* Glass surfaces — translucency carries the effect, not blur. See .glass-panel.
-     Opacity sits near Apple Maps' panels: solid enough to read as a surface,
-     with the dot field a faint texture underneath rather than a pattern. */
-  /* Underlays — the containers content sits on. Kept airy so the dot field
+     Underlays are the containers content sits on, kept airy so the dot field
      still reads through them. */
   --glass-fill: rgba(255, 255, 255, 0.38);
   --glass-fill-chrome: rgba(255, 255, 255, 0.3);
-  /* Cards are opaque objects that float on those underlays, so they carry their
-     own fill rather than compositing over whatever is beneath them. */
-  --glass-fill-card: rgba(255, 255, 255, 0.9);
+  /* Cards carry their own fill rather than compositing over whatever is beneath
+     them, so post, project and skill cards all land identically wherever they
+     sit. Kept a step denser than the underlay so they still read as objects. */
+  --glass-fill-card: rgba(255, 255, 255, 0.45);
   --glass-sheen: linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 45%);
   --glass-rim: rgba(20, 30, 25, 0.07);
-  --glass-rim-nested: rgba(20, 30, 25, 0.09);
+  --glass-rim-card: rgba(20, 30, 25, 0.09);
   /* Hairline inner stroke — gives the panel edge thickness without hazing it. */
   --glass-inset: inset 0 1px 0 rgba(255, 255, 255, 0.9);
   --glass-blur: 10px;
   --glass-shadow: 0 1px 3px rgba(30, 45, 35, 0.07), 0 10px 30px -14px rgba(30, 45, 35, 0.2);
-  --glass-shadow-nested: 0 1px 2px rgba(30, 45, 35, 0.05), 0 4px 12px -8px rgba(30, 45, 35, 0.16);
+  --glass-shadow-card: 0 1px 2px rgba(30, 45, 35, 0.05), 0 4px 12px -8px rgba(30, 45, 35, 0.16);
   --glass-shadow-hover: 0 2px 6px rgba(30, 45, 35, 0.09), 0 18px 40px -18px rgba(30, 45, 35, 0.28);
 
   /* Background dot field — darker/denser on the light surface for contrast */
@@ -76,15 +75,15 @@
      and sheen do the separating. */
   --glass-fill: rgba(28, 26, 34, 0.38);
   --glass-fill-chrome: rgba(23, 21, 28, 0.31);
-  --glass-fill-card: rgba(32, 30, 39, 0.92);
+  --glass-fill-card: rgba(32, 30, 39, 0.46);
   /* No sheen on dark: a white wash over a large dark panel reads as a grey
      haze, not a highlight. The inset stroke below carries the edge instead. */
   --glass-sheen: none;
   --glass-rim: rgba(255, 255, 255, 0.11);
-  --glass-rim-nested: rgba(255, 255, 255, 0.14);
+  --glass-rim-card: rgba(255, 255, 255, 0.14);
   --glass-inset: inset 0 1px 0 rgba(255, 255, 255, 0.08);
   --glass-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 10px 30px -14px rgba(0, 0, 0, 0.55);
-  --glass-shadow-nested: 0 1px 2px rgba(0, 0, 0, 0.22), 0 4px 12px -8px rgba(0, 0, 0, 0.4);
+  --glass-shadow-card: 0 1px 2px rgba(0, 0, 0, 0.22), 0 4px 12px -8px rgba(0, 0, 0, 0.4);
   --glass-shadow-hover: 0 2px 6px rgba(0, 0, 0, 0.35), 0 18px 40px -18px rgba(0, 0, 0, 0.7);
 
   /* Background dot field — soft purple glow reads well on the dark surface */
@@ -155,12 +154,16 @@ header, footer {
   padding: 1rem;
 }
 
-/* Glass surfaces, in two tiers — both pure CSS.
+/* Glass surfaces, in three tiers — all pure CSS.
  *
- * `.glass-panel` (hero, cards, articles) is a translucent fill, a top sheen and
- * a rim. Deliberately no backdrop-filter: these panels are large and there are
- * up to seven per page, and the DotField canvas animating behind them means a
- * blur here can never be cached — it re-rasterizes every frame, on every panel.
+ * `.glass-panel` is the underlay: a translucent fill, a top sheen and a rim,
+ * for the containers content sits on. Deliberately no backdrop-filter — these
+ * are large and there can be several per page, and the DotField canvas
+ * animating behind them means a blur here could never be cached; it would
+ * re-rasterize every frame, on every panel.
+ *
+ * `.glass-panel--card` is an object sitting on a surface: denser, tighter
+ * shadow, no sheen.
  *
  * `.glass-panel--chrome` (header, footer) does get a real blur. Two short
  * full-width bars is an area the compositor absorbs easily, and it's the one
@@ -173,15 +176,15 @@ header, footer {
   box-shadow: var(--glass-inset), var(--glass-shadow);
 }
 
-/* A panel nested inside another is a card, not an underlay — it reads as an
-   object sitting on the container, so it takes the opaque card fill and a
-   tighter shadow. Using an explicit fill (rather than stacking a second veil)
-   keeps it identical however transparent the underlay beneath it gets. */
-.glass-panel .glass-panel {
+/* A card reads as an object sitting on a surface rather than as the surface
+   itself: denser fill, tighter shadow, no sheen. Opt in explicitly instead of
+   keying off nesting, so a card looks the same whether it sits on an underlay
+   or straight on the page. */
+.glass-panel--card {
   background-color: var(--glass-fill-card);
   background-image: none;
-  border-color: var(--glass-rim-nested);
-  box-shadow: var(--glass-inset), var(--glass-shadow-nested);
+  border-color: var(--glass-rim-card);
+  box-shadow: var(--glass-inset), var(--glass-shadow-card);
 }
 
 .glass-panel--chrome {
@@ -210,9 +213,8 @@ footer.glass-panel--chrome {
 }
 
 @media (prefers-reduced-transparency: reduce) {
-  /* Nested selector repeated so it isn't out-specified by the rule above. */
   .glass-panel,
-  .glass-panel .glass-panel {
+  .glass-panel--card {
     background-color: var(--color-bg-secondary);
     background-image: none;
   }
