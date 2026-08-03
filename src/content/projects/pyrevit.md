@@ -1,5 +1,5 @@
 ---
-title: "pyRevit Contributor"
+title: "pyRevit contribution"
 description: "Contributing to pyRevit - a Rapid Application Development environment for Autodesk Revit"
 repo: "pyrevitlabs/pyRevit"
 tags: ["BIM", "Revit", "C#", "Python", "open-source"]
