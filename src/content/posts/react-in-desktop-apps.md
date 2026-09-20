@@ -1,7 +1,7 @@
 ---
 title: "Integrating React into Desktop Applications"
 date: 2024-09-15
-description: "How embedding React-based UI in a WPF desktop application reduced feature delivery time by 30%"
+description: "How embedding a React-based UI in a WPF desktop application supports faster iteration"
 tags: ["React", "WPF", ".NET", "desktop", "architecture"]
 draft: false
 ---
@@ -30,7 +30,6 @@ The architecture involved:
 
 ## Results
 
-- **30% reduction** in feature delivery time
 - Designers could preview UI changes instantly
 - Easier onboarding for frontend developers unfamiliar with WPF
 - More consistent UI across different parts of the application

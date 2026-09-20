@@ -15,7 +15,7 @@ technologies: ["C#", "Python", "IronPython", "RevitAPI", "WPF"]
 
 ## My Contribution: C# Loader
 
-I developed the **C# loader** for pyRevit, a significant architectural component that extends pyRevit's capabilities beyond Python scripting. The C# loader enables developers to:
+I contributed to the **C# loader** for pyRevit, an architectural component that extends pyRevit's capabilities beyond Python scripting. The loader enables developers to:
 
 - Write pyRevit extensions in C# for better performance and type safety
 - Leverage the full .NET ecosystem while maintaining pyRevit's rapid development workflow

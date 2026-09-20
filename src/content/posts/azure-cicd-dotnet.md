@@ -1,7 +1,7 @@
 ---
 title: "Automating .NET Builds with Nuke and Azure Pipelines"
 date: 2024-11-01
-description: "How setting up CI/CD pipelines with Nuke.Build and Azure DevOps cut deployment time by 40%"
+description: "How Nuke.Build and Azure DevOps can automate .NET builds and delivery"
 tags: ["CI/CD", "Azure", ".NET", "DevOps", "automation"]
 draft: false
 ---
@@ -13,7 +13,7 @@ Manual builds and deployments are error-prone and time-consuming. When working o
 - Build for multiple Revit versions (2020-2025)
 - Run tests across all configurations
 - Package installers with proper versioning
-- Deploy to internal distribution channels
+- Package installers for distribution
 
 Doing this manually took hours and was prone to mistakes.
 
@@ -50,9 +50,7 @@ Build Pipeline:
 
 ## Results
 
-- **40% reduction** in deployment time
-- Zero manual build errors
-- Consistent builds across team members
+- More consistent build and deployment steps
 - Automatic version numbering and changelog generation
 
 ## Code Sample
