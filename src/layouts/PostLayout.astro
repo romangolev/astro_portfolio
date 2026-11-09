@@ -1,43 +1,64 @@
 ---
 import MainLayout from './MainLayout.astro';
 import Giscus from '../components/Giscus.astro';
+import { formatDate } from '../utils/formatDate.js';
 
 interface Props {
   title: string;
   description?: string;
-  pubDate?: Date;
-  updatedDate?: Date;
+  date?: Date;
+  readingTime?: number;
   tags?: string[];
   heroImage?: string;
+  nextPost?: { title: string; slug: string };
 }
 
-const { 
+const {
   title = 'Untitled Post',
   description,
-  pubDate,
-  updatedDate,
+  date,
+  readingTime,
   tags = [],
-  heroImage
+  heroImage,
+  nextPost,
 } = Astro.props;
 ---
 
-<MainLayout title={title}>
-  <article class="post glass-panel">
+<MainLayout title={title} description={description} ogType="article">
+  <article class="post glass-panel glass-panel--reading">
     <header>
+      <a class="back-link" href="/posts">← All posts</a>
       <h1>{title}</h1>
       {description && <p class="description">{description}</p>}
-      {pubDate && <time>{pubDate.toLocaleDateString()}</time>}
-      {tags.length > 0 && (
-        <div class="tags">
-          {tags.map(tag => <span class="tag">{tag}</span>)}
+      {(date || readingTime) && (
+        <div class="meta">
+          {date && <time datetime={date.toISOString()}>{formatDate(date)}</time>}
+          {readingTime && <span>{readingTime} min read</span>}
         </div>
       )}
-      {heroImage && <img src={heroImage} alt={title} />}
+      {tags.length > 0 && (
+        <div class="tags">
+          {tags.map((tag) => <span class="tag">{tag}</span>)}
+        </div>
+      )}
     </header>
 
-    <div class="content">
+    {heroImage && (
+      <img class="hero-image" src={heroImage} alt={title} loading="lazy" decoding="async" />
+    )}
+
+    <div class="content prose">
       <slot />
     </div>
+
+    <nav class="more-writing" aria-labelledby="more-writing-label">
+      <h2 class="more-writing-label" id="more-writing-label">More writing</h2>
+      {nextPost && (
+        <a class="more-writing-next" href={`/posts/${nextPost.slug}`}>
+          Next: {nextPost.title} →
+        </a>
+      )}
+    </nav>
 
     <Giscus />
   </article>
@@ -45,44 +66,116 @@ const {
 
 <style>
   .post {
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 2rem;
+    width: min(40rem, 100% - var(--space-4) - var(--space-4));
+    margin: var(--space-6) auto;
+    padding: clamp(1.25rem, 4vw, 2.5rem);
   }
 
   header {
-    margin-bottom: 2rem;
+    margin-bottom: var(--space-6);
   }
 
-  .metadata {
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding-block: .25rem;
+    margin-bottom: var(--space-3);
+    font-size: var(--text-sm);
+    font-weight: 600;
     color: var(--color-text-secondary);
-    font-size: 0.9rem;
+  }
+
+  .back-link:hover {
+    color: var(--color-accent);
+  }
+
+  h1 {
+    margin: 0 0 var(--space-3);
+    font-size: var(--text-h1);
+  }
+
+  .description {
+    margin: 0 0 var(--space-3);
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-3);
+    margin-bottom: var(--space-3);
+    font-size: var(--text-sm);
+    font-family: var(--font-mono);
+    color: var(--color-text-secondary);
   }
 
   .tags {
     display: flex;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
+    flex-wrap: wrap;
+    gap: var(--space-2);
   }
 
-  .tag {
-    background-color: var(--color-bg-tag);
-    color: var(--color-text-tag);
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.25rem;
-    font-size: 0.8rem;
+  .hero-image {
+    width: 100%;
+    margin-bottom: var(--space-5);
+    border-radius: var(--radius-md);
   }
 
-  .content {
-    line-height: 1.6;
+  /* One rule only: the Giscus block below brings its own separator. */
+  .more-writing {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-1);
+    max-width: var(--measure);
+    margin-top: var(--space-6);
+    padding-block: var(--space-3);
+    border-top: 1px solid var(--color-border);
   }
 
-  .content :global(h2) {
-    margin-top: 2rem;
-    margin-bottom: 1rem;
+  .more-writing-label {
+    flex: 0 0 auto;
+    margin: 0;
+    white-space: nowrap;
+    font-size: var(--text-xs);
+    font-family: var(--font-mono);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--color-text-secondary);
   }
 
-  .content :global(p) {
-    margin-bottom: 1.5rem;
+  .more-writing-next {
+    display: inline-flex;
+    align-items: center;
+    min-width: 0;
+    min-height: 44px;
+    padding-block: .25rem;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    overflow-wrap: anywhere;
+    text-align: left;
+    color: var(--color-text);
+  }
+
+  .more-writing-next:hover,
+  .more-writing-next:focus-visible {
+    color: var(--color-accent);
+  }
+
+  /* Wide enough for label and link on one baseline row. */
+  @media (min-width: 48rem) {
+    .more-writing {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: var(--space-4);
+    }
+
+    .more-writing-next {
+      text-align: left;
+    }
   }
 </style>

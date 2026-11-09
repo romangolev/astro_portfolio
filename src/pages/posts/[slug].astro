@@ -5,105 +5,43 @@ import PostLayout from '../../layouts/PostLayout.astro';
 // Generate static paths for all posts
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
+  // Newest first, so the entry after a post is the next older one.
+  const ordered = [...posts].sort(
+    (a, b) => b.data.date.getTime() - a.data.date.getTime()
+  );
 
   return posts.map(post => {
+    const index = ordered.findIndex((entry) => entry.slug === post.slug);
+    const older = ordered[index + 1];
+
     return {
       params: { slug: post.slug },
-      props: { post },
+      props: {
+        post,
+        nextPost: older
+          ? { title: older.data.title, slug: older.slug }
+          : undefined,
+      },
     };
   });
 }
 
-const { post } = Astro.props;
-
+const { post, nextPost } = Astro.props;
 const { Content } = await post.render();
 
-// Add null checks
-const title = post?.data?.title ?? 'Untitled Post';
-const description = post?.data?.description;
-const pubDate = post?.data?.pubDate;
-const updatedDate = post?.data?.updatedDate;
-const tags = post?.data?.tags ?? [];
-const heroImage = post?.data?.heroImage;
+const data = post.data;
+const words = post.body ? post.body.trim().split(/\s+/).length : 0;
+const readingTime = Math.max(1, Math.round(words / 200));
 ---
 
 <PostLayout
-  title={title}
-  description={description}
-  pubDate={pubDate}
-  updatedDate={updatedDate}
-  tags={tags}
-  heroImage={heroImage}
+  title={data.title}
+  description={data.description}
+  date={data.date}
+  readingTime={readingTime}
+  tags={data.tags}
+  heroImage={data.image}
+  nextPost={nextPost}
 >
   <Content />
 </PostLayout>
-
-<style>
-  .blog-post {
-    max-width: 800px;
-    margin: 0 auto;
-  }
-  
-  .date {
-    color: var(--color-text-secondary);
-    margin-bottom: 1rem;
-  }
-  
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  .tag {
-    background-color: var(--color-bg-tag);
-    color: var(--color-text-tag);
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.25rem;
-    font-size: 0.875rem;
-  }
-  
-  .post-image {
-    width: 100%;
-    height: auto;
-    border-radius: 0.5rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  .content {
-    line-height: 1.6;
-  }
-  
-  .content h2 {
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-  }
-  
-  .content h3 {
-    margin-top: 1.5rem;
-    margin-bottom: 0.75rem;
-  }
-  
-  .content p {
-    margin-bottom: 1rem;
-  }
-  
-  .content ul, .content ol {
-    margin-bottom: 1rem;
-    padding-left: 1.5rem;
-  }
-  
-  .content li {
-    margin-bottom: 0.5rem;
-  }
-  
-  .content a {
-    color: var(--color-accent);
-    text-decoration: none;
-  }
-  
-  .content a:hover {
-    text-decoration: underline;
-  }
-</style> 

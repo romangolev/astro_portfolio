@@ -1,6 +1,6 @@
 ---
 title: "Revit C# Multiversion Template"
-description: "A Multitarget Revit Addin Solution Template. Generate a backbone for your Revit Add-in within a seconds!"
+description: "A Multitarget Revit Addin Solution Template. Generate a backbone for your Revit Add-in within seconds!"
 repo: "romangolev/RevitAddinTemplate.Multiversion"
 tags: [".NET", "Revit", "Visual Studio", "C#"]
 weight: 1

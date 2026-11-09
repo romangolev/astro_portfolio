@@ -2,13 +2,15 @@
 import BaseCard from './BaseCard.astro';
 
 const { project } = Astro.props;
+
+// Projects may link a full URL (`github`) or the shorter `owner/repo` form.
+const repoUrl = project.github ?? (project.repo ? `https://github.com/${project.repo}` : undefined);
 ---
 
 <BaseCard
   title={project.title}
   description={project.description}
-  date={project.date}
   url={`/projects/${project.slug}`}
-  image={project.image}
   tags={project.technologies}
+  repo={repoUrl}
 />

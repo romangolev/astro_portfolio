@@ -1,53 +1,42 @@
 ---
 import { getCollection } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
 import PostCard from '../../components/PostCard.astro';
 
-const baseUrl = import.meta.env.BASE_URL || '';
 const posts = await getCollection('posts');
 posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---
 
-<MainLayout title="Posts">
-  <Header baseUrl={baseUrl} slot="header" />
-  <section class="posts">
-    <h1>Posts</h1>
-    <div class="posts-grid">
+<MainLayout
+  title="Posts"
+  description="Posts by Roman Golev on BIM, Revit, .NET and web engineering."
+>
+  <div class="page">
+    <h1 class="page-title">Posts</h1>
+    <div class="grid">
       {posts.map((post) => (
-        <PostCard
-          post={{
-            title: post.data.title,
-            description: post.data.description,
-            date: post.data.date,
-            tags: post.data.tags,
-            slug: post.slug,
-            image: post.data.image,
-          }}
-        />
+        <PostCard post={{ ...post.data, slug: post.slug }} />
       ))}
     </div>
-  </section>
-  <Footer slot="footer" />
+  </div>
 </MainLayout>
 
 <style>
-  .posts {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem;
-  }
-
-  .posts-grid {
+  .grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
   }
 
-  @media (max-width: 640px) {
-    .posts-grid {
-      grid-template-columns: 1fr;
+  @media (min-width: 40rem) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
 </style>

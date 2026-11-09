@@ -2,7 +2,7 @@
 title: "Contributing to RevitPythonShell"
 date: 2025-04-20
 description: "My experience contributing to RevitPythonShell - an IronPython scripting environment for Autodesk Revit"
-tags: ["BIM", "Revit", "Python", "open-source", "C#"]
+tags: ["BIM", "Revit", "Python", "Open Source", "C#"]
 draft: false
 ---
 

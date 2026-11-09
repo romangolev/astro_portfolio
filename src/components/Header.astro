@@ -1,32 +1,66 @@
 ---
-import { getPath } from '../utils/paths';
 import ThemeToggle from '../components/ThemeToggle.astro';
 
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+
 const navItems = [
-  { label: "Home", href: getPath('/') },
-  { label: "Projects", href: getPath('projects') },
-  { label: "Posts", href: getPath('posts') },
-  { label: "About", href: getPath('about') },
+  { label: 'Home', href: '/' },
+  { label: 'Projects', href: '/projects' },
+  { label: 'Posts', href: '/posts' },
+  { label: 'About', href: '/about' },
 ];
 
-// Debug the paths
-navItems.forEach(item => {
-  console.log(`Path for ${item.label}:`, item.href);
-});
+const isActive = (href: string) =>
+  href === '/' ? path === '/' : path === href || path.startsWith(`${href}/`);
 ---
 
 <header class="header glass-panel glass-panel--chrome">
-  <nav class="nav-container">
+  <nav class="nav-container" aria-label="Main">
     <div class="logo">
-      <a href={getPath('/')}>Roman Golev</a>
+      <a href="/">Roman Golev</a>
     </div>
     <div class="nav-right">
-      <ul class="nav-links">
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="site-nav"
+        aria-label="Open menu"
+      >
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      <ul class="nav-links" id="site-nav">
         {navItems.map((item) => (
           <li>
-            <a href={item.href}>{item.label}</a>
+            <a
+              href={item.href}
+              class:list={{ 'is-active': isActive(item.href) }}
+              aria-current={isActive(item.href) ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
           </li>
         ))}
+        <li class="nav-elsewhere">
+          <p class="nav-elsewhere-label">Elsewhere</p>
+          <a href="mailto:rv.golev@gmail.com">Email</a>
+          <a href="https://github.com/romangolev" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="https://www.linkedin.com/in/romangolev/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </li>
       </ul>
       <ThemeToggle />
     </div>
@@ -38,15 +72,18 @@ navItems.forEach(item => {
     position: relative;
     z-index: 2;
     color: var(--color-text);
-    padding: 1rem;
+    padding-block: .75rem;
   }
 
   .nav-container {
+    position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
+    gap: var(--space-4);
+    max-width: var(--container);
+    margin-inline: auto;
+    padding-inline: var(--space-4);
   }
 
   .logo a {
@@ -54,25 +91,30 @@ navItems.forEach(item => {
     font-weight: 500;
     color: var(--color-text);
     text-decoration: none;
+    white-space: nowrap;
   }
 
   .nav-right {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: var(--space-2);
   }
 
   .nav-links {
     display: flex;
-    gap: 1rem;
+    align-items: center;
+    gap: var(--space-4);
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
   .nav-links a {
+    display: inline-flex;
+    align-items: center;
+    padding-block: .5rem;
     color: var(--color-text-secondary);
-    font-size: 0.95rem;
+    font-size: .95rem;
     text-decoration: none;
     transition: color 0.2s ease;
   }
@@ -81,24 +123,248 @@ navItems.forEach(item => {
     color: var(--color-text);
   }
 
-  .theme-toggle-button {
-    display: inline-flex;
+  .nav-links a.is-active {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: .35rem;
+  }
+
+  /* The mobile sheet's footer only exists inside the open sheet. */
+  .nav-elsewhere {
+    display: none;
+  }
+
+  .nav-toggle {
+    display: none;
     align-items: center;
     justify-content: center;
-    width: 2rem;
-    height: 2rem;
-    border-radius: 50%;
-    background-color: var(--color-bg);
-    transition: background-color 0.2s ease;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--color-text);
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
   }
 
-  .theme-toggle-button:hover {
-    background-color: var(--color-bg-hover);
+  .nav-toggle:hover {
+    background: color-mix(in srgb, var(--color-text) 12%, transparent);
   }
 
-  @media (max-width: 768px) {
-    .nav-links {
-      gap: var(--spacing-md);
+  /* Three lines fold into an X while the menu is open. */
+  .nav-toggle line {
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  .nav-toggle[aria-expanded='true'] line:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+
+  .nav-toggle[aria-expanded='true'] line:nth-child(2) {
+    opacity: 0;
+  }
+
+  .nav-toggle[aria-expanded='true'] line:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+
+  @media (max-width: 560px) {
+    /* Without JS the nav must remain reachable, so hiding only applies once
+       the head script has marked the document as scripted. */
+    html.js .nav-toggle {
+      display: inline-flex;
+    }
+
+    html.js .nav-links {
+      display: none;
+    }
+
+    /* Escape the header's containing block so the sheet spans the viewport.
+       Backdrop blur would trap a fixed child, so the mobile header drops it. */
+    .header {
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+
+    /* The bar above the sheet stays opaque so the sheet reads as one surface. */
+    .header.menu-open {
+      background: var(--menu-bg);
+    }
+
+    .nav-container[data-open='true'] .nav-links {
+      display: flex;
+      position: fixed;
+      inset: 4.25rem 0 0;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      padding: var(--space-4);
+      background: var(--menu-bg);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      border: none;
+      box-shadow: none;
+      z-index: 3;
+    }
+
+    .nav-container[data-open='true'] .nav-links li {
+      width: 100%;
+    }
+
+    .nav-container[data-open='true'] .nav-links a {
+      width: 100%;
+      min-height: 44px;
+      padding-block: 0;
+    }
+
+    /* The four primary rows carry the sheet's typographic weight. Elsewhere
+       stays quiet at the base size so the block reads as a footer. */
+    .nav-container[data-open='true'] .nav-links > li:not(.nav-elsewhere) > a {
+      font-size: 1.5rem;
+      font-weight: 500;
+      min-height: 56px;
+    }
+
+    /* Pin the contact block to the bottom of the sheet so the open menu never
+       ends in empty space. */
+    .nav-container[data-open='true'] .nav-links .nav-elsewhere {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      margin-top: auto;
+      padding-top: var(--space-4);
+      border-top: 1px solid var(--color-border);
+    }
+
+    .nav-elsewhere-label {
+      margin: 0 0 var(--space-2);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-text-secondary);
+    }
+
+    /* JS-disabled fallback: the plain nav wraps instead of overflowing. */
+    html:not(.js) .nav-container {
+      flex-wrap: wrap;
+    }
+
+    html:not(.js) .nav-links {
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: var(--space-2) var(--space-3);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav-toggle line {
+      transition: none;
     }
   }
 </style>
+
+<script>
+  const nav = document.querySelector('.nav-container');
+  const toggle = nav?.querySelector('.nav-toggle');
+  const header = nav?.closest('header');
+
+  // Everything outside the header becomes inert while the sheet is open, so
+  // Tab can never land on covered content. The skip link lives outside the
+  // wrapper and would otherwise be the one escape hatch.
+  const covered = [
+    document.querySelector('.skip-link'),
+    document.getElementById('main-content'),
+    document.querySelector('footer'),
+  ].filter(Boolean);
+
+  function setBodyLock(locked) {
+    document.body.style.overflow = locked ? 'hidden' : '';
+  }
+
+  function setCoveredInert(inert) {
+    covered.forEach((element) => {
+      if (inert) element.setAttribute('inert', '');
+      else element.removeAttribute('inert');
+    });
+  }
+
+  function openMenu() {
+    if (!nav || !toggle) return;
+    nav.setAttribute('data-open', 'true');
+    toggle.setAttribute('aria-expanded', 'true');
+    toggle.setAttribute('aria-label', 'Close menu');
+    setBodyLock(true);
+    setCoveredInert(true);
+    header?.classList.add('menu-open');
+    // Wait for the sheet to leave `display: none` before moving focus into it.
+    requestAnimationFrame(() => nav.querySelector('.nav-links a')?.focus());
+  }
+
+  function closeMenu({ restoreFocus = false } = {}) {
+    if (!nav || !toggle) return;
+    nav.removeAttribute('data-open');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-label', 'Open menu');
+    setBodyLock(false);
+    setCoveredInert(false);
+    header?.classList.remove('menu-open');
+    if (restoreFocus) toggle.focus();
+  }
+
+  toggle?.addEventListener('click', () => {
+    if (!nav) return;
+    const isOpen = nav.getAttribute('data-open') === 'true';
+    if (isOpen) closeMenu({ restoreFocus: true });
+    else openMenu();
+  });
+
+  nav?.querySelectorAll('.nav-links a').forEach((link) => {
+    link.addEventListener('click', () => closeMenu());
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    if (!nav || nav.getAttribute('data-open') !== 'true') return;
+    closeMenu({ restoreFocus: true });
+  });
+
+  // Keep Tab inside the header while the sheet covers the page: without this
+  // the browser chromes the cycle and focus visibly leaves the menu.
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Tab') return;
+    if (!nav || !header || nav.getAttribute('data-open') !== 'true') return;
+    const focusables = [...header.querySelectorAll('a[href], button:not([disabled])')].filter(
+      (element) => element.getClientRects().length > 0
+    );
+    if (focusables.length === 0) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  });
+
+  // A pointer press anywhere outside the header closes the panel. `pointerdown`
+  // fires before the click, so a menu link still navigates normally.
+  document.addEventListener('pointerdown', (event) => {
+    if (!nav || nav.getAttribute('data-open') !== 'true') return;
+    if (nav.contains(event.target)) return;
+    closeMenu();
+  });
+
+  const desktop = window.matchMedia('(min-width: 561px)');
+  desktop.addEventListener('change', (event) => {
+    if (event.matches) closeMenu();
+  });
+</script>

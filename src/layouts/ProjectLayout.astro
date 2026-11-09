@@ -1,69 +1,78 @@
 ---
 import MainLayout from './MainLayout.astro';
 import Giscus from '../components/Giscus.astro';
+import { formatDate } from '../utils/formatDate.js';
 
 interface Props {
   title: string;
   description?: string;
-  pubDate?: Date;
+  date?: Date;
   technologies?: string[];
   github?: string;
-  live?: string;
+  repo?: string;
+  demo?: string;
+  image?: string;
 }
 
-const { 
-  title, 
-  description, 
-  pubDate,
+const {
+  title,
+  description,
+  date,
   technologies = [],
   github,
-  live
+  repo,
+  demo,
+  image,
 } = Astro.props;
 
-const formattedDate = pubDate?.toLocaleDateString('en-us', {
-  year: 'numeric',
-  month: 'short',
-  day: 'numeric',
-});
+const repoUrl = github ?? (repo ? `https://github.com/${repo}` : undefined);
 ---
 
-<MainLayout title={title}>
-  <article class="project-container glass-panel">
-    <div class="project-header">
+<MainLayout title={title} description={description} ogType="article">
+  <article class="project glass-panel glass-panel--reading">
+    <header class="project-header">
+      <a class="back-link" href="/projects">← All projects</a>
       <h1>{title}</h1>
       {description && <p class="description">{description}</p>}
-      
-      <div class="project-meta">
-        {formattedDate && (
-          <div class="date">
-            Published: {formattedDate}
-          </div>
-        )}
-        
-        {technologies.length > 0 && (
-          <div class="technologies">
-            {technologies.map(tech => (
-              <span class="tech-tag">{tech}</span>
-            ))}
-          </div>
-        )}
 
-        <div class="project-links">
-          {github && (
-            <a href={github} target="_blank" rel="noopener noreferrer" class="project-link github">
-              GitHub
-            </a>
-          )}
-          {live && (
-            <a href={live} target="_blank" rel="noopener noreferrer" class="project-link live">
-              Live Demo
-            </a>
+      <div class="meta">
+        <div class="meta-details">
+          {date && <time datetime={date.toISOString()}>{formatDate(date)}</time>}
+          {technologies.length > 0 && (
+            <div class="tags">
+              {technologies.map((tech) => <span class="tag">{tech}</span>)}
+            </div>
           )}
         </div>
       </div>
-    </div>
 
-    <div class="content">
+      {(repoUrl || demo) && (
+        <div class="actions">
+          {repoUrl && (
+            <a
+              class="btn btn--ghost"
+              href={repoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${title} on GitHub (opens in a new tab)`}
+            >
+              GitHub
+            </a>
+          )}
+          {demo && (
+            <a class="btn btn--primary" href={demo} target="_blank" rel="noopener noreferrer">
+              Demo
+            </a>
+          )}
+        </div>
+      )}
+    </header>
+
+    {image && (
+      <img class="hero-image" src={image} alt={title} loading="lazy" decoding="async" />
+    )}
+
+    <div class="content prose">
       <slot />
     </div>
 
@@ -72,112 +81,81 @@ const formattedDate = pubDate?.toLocaleDateString('en-us', {
 </MainLayout>
 
 <style>
-  .project-container {
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 2rem;
+  .project {
+    width: min(40rem, 100% - var(--space-4) - var(--space-4));
+    margin: var(--space-6) auto;
+    padding: clamp(1.25rem, 4vw, 2.5rem);
   }
 
   .project-header {
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
+    margin-bottom: var(--space-3);
+    padding-bottom: var(--space-4);
     border-bottom: 1px solid var(--color-border);
   }
 
-  .description {
-    font-size: 1.2rem;
-    color: var(--color-text-secondary);
-    margin: 1rem 0;
-  }
-
-  .project-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    align-items: center;
-    margin-top: 1rem;
-  }
-
-  .date {
-    color: var(--color-text-secondary);
-    font-size: 0.9rem;
-  }
-
-  .technologies {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .tech-tag {
-    background-color: var(--color-bg-secondary);
-    color: var(--color-text);
-    padding: 0.25rem 0.75rem;
-    border-radius: 1rem;
-    font-size: 0.9rem;
-  }
-
-  .project-links {
-    display: flex;
-    gap: 1rem;
-    margin-left: auto;
-  }
-
-  .project-link {
+  .back-link {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    text-decoration: none;
-    font-weight: 500;
-    transition: all 0.2s ease;
+    min-height: 44px;
+    padding-block: .25rem;
+    margin-bottom: var(--space-3);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-text-secondary);
   }
 
-  .github {
-    background-color: var(--color-bg-secondary);
-    color: var(--color-text);
+  .back-link:hover {
+    color: var(--color-accent);
   }
 
-  .live {
-    background-color: var(--color-accent);
-    color: white;
+  h1 {
+    margin: 0;
+    font-size: var(--text-h1);
   }
 
-  .project-link:hover {
-    transform: translateY(-2px);
-    opacity: 0.9;
+  .description {
+    margin: var(--space-3) 0 0;
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
   }
 
-  .content {
-    line-height: 1.6;
-    color: var(--color-text);
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-3);
+    margin-top: var(--space-4);
   }
 
-  .content :global(h2) {
-    margin: 2rem 0 1rem;
-    font-size: 1.8rem;
+  .meta-details {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-3);
+    font-size: var(--text-sm);
+    font-family: var(--font-mono);
+    color: var(--color-text-secondary);
   }
 
-  .content :global(p) {
-    margin: 1rem 0;
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
   }
 
-  .content :global(img) {
-    max-width: 100%;
-    height: auto;
-    border-radius: 0.5rem;
-    margin: 1.5rem 0;
+  /* Actions sit at the end of the intro, above the header rule. */
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: var(--space-2);
+    width: 100%;
+    margin-top: var(--space-4);
   }
 
-  @media (max-width: 768px) {
-    .project-meta {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .project-links {
-      margin-left: 0;
-    }
+  .hero-image {
+    width: 100%;
+    margin-bottom: var(--space-5);
+    border-radius: var(--radius-md);
   }
-</style> 
+</style>

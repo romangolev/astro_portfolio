@@ -2,7 +2,7 @@
 title: "NavisTools"
 description: "A set of tools to enhance functionality of Autodesk Navisworks for BIM coordination and data export"
 repo: "romangolev/NavisTools"
-tags: ["BIM", "Navisworks", "C#", ".NET", "coordination"]
+tags: ["BIM", "Navisworks", "C#", ".NET", "Coordination"]
 weight: 2
 draft: false
 date: 2026-01-15

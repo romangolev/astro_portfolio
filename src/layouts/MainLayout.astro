@@ -1,37 +1,108 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import DotField from '../components/DotField/DotField.jsx';
 import '../styles/global.css';
 
-const { title } = Astro.props;
+interface Props {
+  title: string;
+  description?: string;
+  noindex?: boolean;
+  ogType?: 'website' | 'article';
+}
+
+const {
+  title,
+  description = 'Roman Golev — Software Engineer focused on AEC/BIM tooling, .NET and web.',
+  noindex = false,
+  ogType = 'website',
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://www.romangolev.com');
+
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Roman Golev',
+  jobTitle: 'Software Engineer',
+  url: 'https://www.romangolev.com',
+  email: 'mailto:rv.golev@gmail.com',
+  sameAs: [
+    'https://github.com/romangolev',
+    'https://www.linkedin.com/in/romangolev/',
+  ],
+};
 ---
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <title>{title} | Roman Golev</title>
-    <meta name="description" content="Roman Golev's Portfolio Website" />
+    <meta name="description" content={description} />
+    {noindex ? (
+      <meta name="robots" content="noindex" />
+    ) : (
+      <link rel="canonical" href={canonicalURL.href} />
+    )}
+    <meta property="og:title" content={`${title} | Roman Golev`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonicalURL.href} />
+    <meta property="og:site_name" content="Roman Golev" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={`${title} | Roman Golev`} />
+    <meta name="twitter:description" content={description} />
+    <script type="application/ld+json" set:html={JSON.stringify(person)} />
     <script is:inline>
-      const theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.classList.add('js');
+      let theme;
+      try {
+        theme = localStorage.getItem('theme');
+      } catch (error) {
+        // Storage can throw when blocked; fall through to the media query so
+        // theme boot never aborts on the exception.
+      }
+      theme = theme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
       document.documentElement.classList.toggle('dark', theme === 'dark');
     </script>
   </head>
   <body>
-    <div class="bg-dot-field">
-      <DotField client:only="react" glowColor="transparent" />
-    </div>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <div class="bg-dot-field" aria-hidden="true" data-dot-field></div>
     <div class="site-wrapper">
       <Header />
-      <main class="main-content">
+      <main id="main-content" class="main-content" tabindex="-1">
         <slot />
       </main>
       <Footer />
     </div>
+    <script>
+      import { initDotField } from '../components/DotField/dotfield.js';
 
+      // The dot field is decorative and its first paint is a static frame, so
+      // build it off the critical path. Building the dot grid is the only
+      // meaningful chunk of work here; deferring it keeps the load free of
+      // long tasks. Pointer listeners are attached at the same time and start
+      // the RAF loop on first input.
+      const init = () => {
+        const container = document.querySelector('[data-dot-field]');
+        if (container) initDotField(container);
+      };
+
+      const whenIdle = window.requestIdleCallback ?? ((cb) => setTimeout(cb, 200));
+
+      if (document.readyState === 'loading') {
+        document.addEventListener(
+          'DOMContentLoaded',
+          () => whenIdle(init, { timeout: 1000 }),
+          { once: true }
+        );
+      } else {
+        whenIdle(init, { timeout: 1000 });
+      }
+    </script>
   </body>
 </html>
 
@@ -50,12 +121,11 @@ const { title } = Astro.props;
     position: relative;
   }
 
+  /* Pages own their own horizontal padding (via .page / .container / their
+     layouts), so the wrapper stays full width. */
   .main-content {
     flex: 1 0 auto;
     width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem 1rem;
     position: relative;
     z-index: 1;
   }

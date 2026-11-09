@@ -2,7 +2,7 @@
 title: "pyRevit contribution"
 description: "Contributing to pyRevit - a Rapid Application Development environment for Autodesk Revit"
 repo: "pyrevitlabs/pyRevit"
-tags: ["BIM", "Revit", "C#", "Python", "open-source"]
+tags: ["BIM", "Revit", "C#", "Python", "Open Source"]
 weight: 3
 draft: false
 date: 2025-12-31

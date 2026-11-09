@@ -1,60 +1,173 @@
----
----
-<div class="giscus"></div>
+<section class="comments" aria-labelledby="comments-title">
+  <h2 id="comments-title" class="comments-title">Comments</h2>
+  <div class="giscus" data-state="loading">
+    <p class="giscus-loading">Loading comments…</p>
+  </div>
+</section>
 
 <script is:inline>
-  function loadGiscus() {
-    const script = document.createElement("script");
-    script.src = "https://giscus.app/client.js";
-    script.setAttribute("data-repo", "romangolev/astro_portfolio");
-    script.setAttribute("data-repo-id", "R_kgDOLNGqyQ");
-    script.setAttribute("data-category", "Announcements");
-    script.setAttribute("data-category-id", "DIC_kwDOLNGqyc4CdYXA");
-    script.setAttribute("data-mapping", "pathname");
-    script.setAttribute("data-strict", "0");
-    script.setAttribute("data-reactions-enabled", "1");
-    script.setAttribute("data-emit-metadata", "0");
-    script.setAttribute("data-input-position", "bottom");
-    script.setAttribute("data-theme", document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-    script.setAttribute("data-lang", "en");
-    script.crossOrigin = "anonymous";
-    script.async = true;
-
+  (() => {
     const container = document.querySelector('.giscus');
-    container.appendChild(script);
-  }
+    if (!container) return;
 
-  // Load Giscus after the component mounts
-  document.addEventListener('DOMContentLoaded', loadGiscus);
+    let started = false;
+    let themeObserverStarted = false;
+    let failureTimer;
 
-  // Update Giscus theme when site theme changes
-  const observer = new MutationObserver(function(mutations) {
-    mutations.forEach(function(mutation) {
-      if (mutation.attributeName === 'class') {
+    // The iframe only exists once the client script has run, so watch for theme
+    // changes after load rather than eagerly on every page.
+    function startThemeObserver() {
+      if (themeObserverStarted) return;
+      themeObserverStarted = true;
+
+      const observer = new MutationObserver(() => {
         const isDark = document.documentElement.classList.contains('dark');
         const iframe = document.querySelector('.giscus-frame');
-        if (iframe) {
-          iframe.contentWindow.postMessage(
-            { giscus: { setConfig: { theme: isDark ? 'dark' : 'light' } } },
-            'https://giscus.app'
-          );
-        }
-      }
-    });
-  });
+        if (!iframe || !iframe.contentWindow) return;
+        iframe.contentWindow.postMessage(
+          { giscus: { setConfig: { theme: isDark ? 'transparent_dark' : 'light' } } },
+          'https://giscus.app'
+        );
+      });
 
-  // Start observing theme changes
-  observer.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ['class']
-  });
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class'],
+      });
+    }
+
+    function markReady() {
+      if (container.dataset.state === 'failed') return;
+      clearTimeout(failureTimer);
+      container.dataset.state = 'ready';
+      startThemeObserver();
+    }
+
+    // The iframe is injected by the client script, so wait for it to appear and
+    // then swap the loading copy for the real discussion.
+    function watchForFrame() {
+      const reveal = () => {
+        const iframe = container.querySelector('iframe');
+        if (!iframe) return false;
+        iframe.addEventListener('load', markReady, { once: true });
+        return true;
+      };
+
+      if (reveal()) return;
+
+      const observer = new MutationObserver(() => {
+        if (reveal()) observer.disconnect();
+      });
+      observer.observe(container, { childList: true, subtree: true });
+    }
+
+    function loadGiscus() {
+      if (started) return;
+      started = true;
+
+      const script = document.createElement('script');
+      script.src = 'https://giscus.app/client.js';
+      script.setAttribute('data-repo', 'romangolev/astro_portfolio');
+      script.setAttribute('data-repo-id', 'R_kgDOLNGqyQ');
+      script.setAttribute('data-category', 'Announcements');
+      script.setAttribute('data-category-id', 'DIC_kwDOLNGqyc4CdYXA');
+      script.setAttribute('data-mapping', 'pathname');
+      script.setAttribute('data-strict', '0');
+      script.setAttribute('data-reactions-enabled', '1');
+      script.setAttribute('data-emit-metadata', '0');
+      script.setAttribute('data-input-position', 'bottom');
+      script.setAttribute('data-theme', document.documentElement.classList.contains('dark') ? 'transparent_dark' : 'light');
+      script.setAttribute('data-lang', 'en');
+      script.crossOrigin = 'anonymous';
+      script.async = true;
+
+      script.addEventListener('load', () => {
+        clearTimeout(failureTimer);
+        watchForFrame();
+      }, { once: true });
+
+      // If the third-party script never arrives, stop holding a blank reserved
+      // area and say so quietly instead.
+      script.onerror = markFailed;
+      failureTimer = setTimeout(markFailed, 5000);
+
+      container.appendChild(script);
+    }
+
+    function markFailed() {
+      if (container.dataset.state === 'ready') return;
+      container.dataset.state = 'failed';
+    }
+
+    // Wait until the comments are close to the viewport before paying for the
+    // third-party iframe (it otherwise blocks hundreds of ms during load).
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((entry) => entry.isIntersecting)) {
+            observer.disconnect();
+            loadGiscus();
+          }
+        },
+        { rootMargin: '400px 0px' }
+      );
+
+      observer.observe(container);
+    } else {
+      loadGiscus();
+    }
+  })();
 </script>
 
 <style>
-  .giscus {
+  /* The heading lives outside .giscus because the client script clears that
+     container's children when it injects the iframe. */
+  .comments {
     margin-top: 4rem;
     padding-top: 2rem;
     border-top: 1px solid var(--color-border);
     width: 100%;
   }
-</style> 
+
+  .comments-title {
+    margin: 0 0 var(--space-3);
+    font-size: var(--text-xs);
+    font-family: var(--font-mono);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--color-text-secondary);
+  }
+
+  .giscus {
+    min-height: 370px;
+    width: 100%;
+  }
+
+  /* The reserved height reads as an intentional loading state, not a blank band. */
+  .giscus-loading {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    opacity: .75;
+  }
+
+  .giscus[data-state='ready'] .giscus-loading,
+  .giscus[data-state='failed'] .giscus-loading {
+    display: none;
+  }
+
+  /* Only when the script never arrives: release the tall reservation and show
+     a quiet line instead of an empty box. */
+  .giscus[data-state='failed'] {
+    min-height: 0;
+  }
+
+  .giscus[data-state='failed']::before {
+    content: 'Comments unavailable.';
+    display: block;
+    padding-block: var(--space-3);
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+  }
+</style>

@@ -1,18 +1,71 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
+
+const contactLinks = [
+  { label: 'Email', href: 'mailto:rv.golev@gmail.com', external: false },
+  { label: 'GitHub', href: 'https://github.com/romangolev', external: true },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/romangolev/', external: true },
+  { label: 'Projects', href: '/projects', external: false },
+  { label: 'Posts', href: '/posts', external: false },
+];
 ---
 
-<MainLayout title="About">
-  <Header slot="header" />
+<MainLayout
+  title="About"
+  description="About Roman Golev — a software engineer in Barcelona working across FinTech, AEC, and Learning/Education."
+>
+  <div class="page">
+    <h1 class="page-title">About</h1>
 
-  <section class="about">
-    <h1>About Me</h1>
-    <div class="content glass-panel">
-      <p>A Software Engineer with a 5+ years experience designing, developing and maintaining scalable, effective and secure solutions across FinTech, AEC and Learning/Education domains. I am proactive specialist with an end-to-end ownership mindset have a proactive approach. Actual builder of ideas, being enthusiastic about seeing the product actually strive. Open-Source geek and a road bike rider.</p>
+    <div class="content glass-panel glass-panel--reading">
+      <div class="intro">
+        <div class="bio">
+          <p>
+            A Software Engineer with a 5+ years experience designing, developing and maintaining scalable, effective and secure solutions across FinTech, AEC and Learning/Education domains. I am proactive specialist with an end-to-end ownership mindset have a proactive approach. Actual builder of ideas, being enthusiastic about seeing the product actually strive. Open-Source geek and a road bike rider.
+          </p>
+        </div>
 
-      <h2>Technical Expertise</h2>
+        <aside class="facts" aria-label="At a glance">
+          <h2 class="facts-title">At a glance</h2>
+          <dl>
+            <div>
+              <dt>Based in</dt>
+              <dd>Barcelona</dd>
+            </div>
+            <div>
+              <dt>Experience</dt>
+              <dd>5+ years</dd>
+            </div>
+            <div>
+              <dt>Focus</dt>
+              <dd>FinTech, AEC, Learning/Education</dd>
+            </div>
+            <div>
+              <dt>Open source</dt>
+              <dd>pyRevit, pyArchitect</dd>
+            </div>
+          </dl>
+        </aside>
+      </div>
+
+      <div class="contact-strip">
+        <p class="contact-label">Elsewhere</p>
+        <ul class="contact-links" aria-label="Contact and links">
+          {contactLinks.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                target={link.external ? '_blank' : undefined}
+                rel={link.external ? 'noopener noreferrer' : undefined}
+              >
+                {link.label}{link.external ? ' ↗' : ''}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <h2>Technical expertise</h2>
       <div class="skills-grid">
         <div class="skill-category glass-panel glass-panel--card">
           <h3>Product Engineering</h3>
@@ -40,39 +93,25 @@ import Footer from '../components/Footer.astro';
         </div>
       </div>
 
-      <h2>Open Source</h2>
+      <h2>Open source</h2>
       <ul>
         <li>Contributions to pyRevit and related AEC developer tooling</li>
         <li>Python, C#, and Revit automation projects</li>
       </ul>
 
-      <p style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--color-border);">
-        Interested in collaborating? Check out my projects and posts, or reach out through my social links.
-      </p>
+      <div class="closing-rule">
+        <p class="closing">
+          Interested in collaborating? Check out my <a href="/projects">projects</a> and <a href="/posts">posts</a>, or reach out at <a href="mailto:rv.golev@gmail.com">rv.golev@gmail.com</a>.
+        </p>
+      </div>
     </div>
-  </section>
-
-  <Footer slot="footer" />
+  </div>
 </MainLayout>
 
 <style>
-  /* Matches .posts and .projects so page titles line up across the site. */
-  .about {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem;
-  }
-
-  /* The page title sits on the background; only the body copy gets a panel. */
-  .about h1 {
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
-  }
-
   .content {
+    padding: clamp(1.5rem, 4vw, 2.5rem);
     line-height: 1.7;
-    color: var(--color-text);
-    padding: 2rem;
   }
 
   .content > *:first-child {
@@ -80,64 +119,154 @@ import Footer from '../components/Footer.astro';
   }
 
   .content p {
-    margin: 1rem 0;
+    max-width: var(--measure);
+    margin: var(--space-4) 0;
+  }
+
+  /* Intro reads as a wide pair: bio at a comfortable measure, facts pinned
+     to the trailing edge so the panel's full width is used. */
+  .intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-5);
+  }
+
+  .intro .bio {
+    max-width: 52ch;
+  }
+
+  .intro .bio > p:first-child {
+    margin-top: 0;
+  }
+
+  .facts {
+    padding-left: var(--space-4);
+    border-left: 2px solid var(--color-accent);
+  }
+
+  .content .facts-title {
+    margin: 0 0 var(--space-3);
+    padding: 0;
+    border-bottom: none;
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  .facts dl {
+    margin: 0;
+  }
+
+  .facts dl > div {
+    margin-bottom: var(--space-3);
+  }
+
+  .facts dl > div:last-child {
+    margin-bottom: 0;
+  }
+
+  .facts dt {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  .facts dd {
+    margin: 0.15rem 0 0;
+    font-size: var(--text-sm);
+    line-height: 1.5;
+  }
+
+  @media (min-width: 48rem) {
+    .intro {
+      grid-template-columns: minmax(0, 1fr) minmax(120px, 180px);
+      gap: var(--space-6);
+      align-items: start;
+    }
+  }
+
+  /* Wide screens: the bio keeps its measure and the facts block is pinned to
+     the far edge of the row, so the gap reads as two columns rather than a
+     stub floating next to the text. */
+  @media (min-width: 64rem) {
+    .intro {
+      grid-template-columns: minmax(0, 52ch) 1fr;
+    }
+
+    .facts {
+      justify-self: end;
+      width: 180px;
+    }
   }
 
   .content h2 {
-    font-size: 1.5rem;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-    color: var(--color-text);
+    font-size: var(--text-h2);
+    margin: var(--space-6) 0 var(--space-3);
+    padding-bottom: var(--space-2);
     border-bottom: 2px solid var(--color-border);
-    padding-bottom: 0.5rem;
   }
 
   .content h3 {
-    font-size: 1.1rem;
-    margin: 0.5rem 0;
+    font-size: var(--text-h3);
+    margin: var(--space-2) 0;
     color: var(--color-accent);
   }
 
   .content ul {
+    margin: var(--space-4) 0;
+    padding-left: 0;
     list-style-position: inside;
-    margin: 1rem 0;
   }
 
   .content li {
-    margin: 0.5rem 0;
+    margin: var(--space-2) 0;
     color: var(--color-text-secondary);
   }
 
-  .timeline {
-    list-style: none;
+  .contact-strip {
+    margin: var(--space-5) 0 0;
+    padding: var(--space-4) 0 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .content .contact-label {
+    margin: 0 0 var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  .content .contact-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 var(--space-5);
+    margin: 0;
     padding: 0;
-    margin: 1rem 0;
+    list-style: none;
+    border-top: none;
   }
 
-  .timeline li {
-    margin: 0.75rem 0;
-    padding-left: 1.5rem;
-    position: relative;
+  .content .contact-links li {
+    margin: 0;
   }
 
-  .timeline li::before {
-    content: '•';
-    position: absolute;
-    left: 0;
-    color: var(--color-accent);
-    font-weight: bold;
-    font-size: 1.2rem;
-  }
-
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin: 1.5rem 0;
+  .contact-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding-block: .25rem;
+    font-size: var(--text-sm);
+    font-weight: 600;
   }
 
   .skill-category {
-    padding: 1.25rem;
+    padding: var(--space-5);
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   }
 
@@ -155,15 +284,62 @@ import Footer from '../components/Footer.astro';
 
   .skill-category h3 {
     margin-top: 0;
-    color: var(--color-accent);
-    font-size: 1rem;
-    font-weight: 600;
   }
 
   .skill-category p {
-    margin: 0.75rem 0 0 0;
-    font-size: 0.9rem;
-    color: var(--color-text-secondary);
+    margin: var(--space-2) 0 0;
+    font-size: var(--text-sm);
     line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  .closing-rule {
+    margin-top: var(--space-6);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .closing-rule .closing {
+    margin: 0;
+  }
+
+  /* Inline prose links opt into an underline; the labelled contact strip
+     above keeps its button-like treatment without one. */
+  .content p a,
+  .closing a {
+    text-decoration: underline;
+    text-underline-offset: .18em;
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: var(--space-5);
+    margin: var(--space-5) 0;
+  }
+
+  @media (max-width: 30rem) {
+    .skills-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (min-width: 30rem) and (max-width: 40rem) {
+    .skills-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-3);
+    }
+  }
+
+  @media (max-width: 40rem) {
+    .skill-category {
+      padding: var(--space-4);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .skills-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
   }
 </style>

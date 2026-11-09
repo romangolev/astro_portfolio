@@ -2,7 +2,7 @@
 title: "Integrating React into Desktop Applications"
 date: 2024-09-15
 description: "How embedding a React-based UI in a WPF desktop application supports faster iteration"
-tags: ["React", "WPF", ".NET", "desktop", "architecture"]
+tags: ["React", "WPF", ".NET", "Desktop", "Architecture"]
 draft: false
 ---
 

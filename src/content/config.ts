@@ -5,9 +5,11 @@ const projectCollection = defineCollection({
     title: z.string(),
     description: z.string(),
     date: z.date(),
+    weight: z.number().optional(),
     technologies: z.array(z.string()),
     image: z.string().optional(),
     github: z.string().optional(),
+    repo: z.string().optional(),
     demo: z.string().optional(),
   }),
 });

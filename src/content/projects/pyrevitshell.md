@@ -2,11 +2,11 @@
 title: "RevitPythonShell"
 description: "The RevitPythonShell adds an IronPython interpreter to Autodesk Revit and Vasari."
 repo: "architecture-building-systems/revitpythonshell"
-tags: ["BIM", "Revit", "pyRevit", "architecture", "design", "Python"]
+tags: ["BIM", "Revit", "pyRevit", "Architecture", "Design", "Python"]
 weight: 1
 draft: false
 date: 2023-01-15
-technologies: ["python", "Contribution", "RevitAPI", "C#"]
+technologies: ["Python", "Contribution", "RevitAPI", "C#"]
 ---
 
 

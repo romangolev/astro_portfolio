@@ -1,53 +1,49 @@
 ---
 import { getCollection } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
 
-const baseUrl = import.meta.env.BASE_URL || '';
 const projects = await getCollection('projects');
-projects.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+// Curated order first (weights), then alphabetical within a weight so the
+// ordering is deterministic. Projects without a weight trail the rest.
+projects.sort((a, b) => {
+  const weightA = a.data.weight ?? Number.MAX_SAFE_INTEGER;
+  const weightB = b.data.weight ?? Number.MAX_SAFE_INTEGER;
+  if (weightA !== weightB) return weightA - weightB;
+  return a.data.title.localeCompare(b.data.title);
+});
 ---
 
-<MainLayout title="Projects">
-  <Header baseUrl={baseUrl} slot="header" />
-  <section class="projects">
-    <h1>My Projects & Contributions</h1>
-    <div class="projects-grid">
+<MainLayout
+  title="Projects"
+  description="Projects and open-source contributions by Roman Golev across AEC, Revit and .NET."
+>
+  <div class="page">
+    <h1 class="page-title">Projects</h1>
+    <div class="grid">
       {projects.map((project) => (
-        <ProjectCard
-          project={{
-            title: project.data.title,
-            description: project.data.description,
-            date: project.data.date,
-            technologies: project.data.technologies,
-            slug: project.slug,
-            image: project.data.image,
-          }}
-        />
+        <ProjectCard project={{ ...project.data, slug: project.slug }} />
       ))}
     </div>
-  </section>
-  <Footer slot="footer" />
+  </div>
 </MainLayout>
 
 <style>
-  .projects {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem;
-  }
-
-  .projects-grid {
+  .grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
   }
 
-  @media (max-width: 640px) {
-    .projects-grid {
-      grid-template-columns: 1fr;
+  @media (min-width: 40rem) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
 </style>

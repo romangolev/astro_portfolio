@@ -18,69 +18,12 @@ const { Content } = await project.render();
 <ProjectLayout
   title={project.data.title}
   description={project.data.description}
-  pubDate={project.data.pubDate}
-  updatedDate={project.data.updatedDate}
+  date={project.data.date}
   technologies={project.data.technologies}
   github={project.data.github}
-  live={project.data.live}
+  repo={project.data.repo}
+  demo={project.data.demo}
+  image={project.data.image}
 >
   <Content />
 </ProjectLayout>
-
-<style>
-  .project {
-    max-width: 800px;
-    margin: 0 auto;
-  }
-  
-  .date {
-    color: var(--color-text-secondary);
-    margin-bottom: 1rem;
-  }
-  
-  .technologies {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  .tech-tag {
-    background-color: var(--color-bg-tag);
-    color: var(--color-text-tag);
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.25rem;
-    font-size: 0.875rem;
-  }
-  
-  .project-image {
-    width: 100%;
-    height: auto;
-    border-radius: 0.5rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  .content {
-    line-height: 1.6;
-  }
-  
-  .links {
-    display: flex;
-    gap: 1rem;
-    margin-top: 2rem;
-  }
-  
-  .links a {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    background-color: var(--color-accent);
-    color: white;
-    text-decoration: none;
-    border-radius: 0.25rem;
-    transition: background-color 0.2s ease;
-  }
-  
-  .links a:hover {
-    background-color: var(--color-text);
-  }
-</style> 

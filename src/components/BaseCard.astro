@@ -1,37 +1,49 @@
 ---
+import { formatDate } from '../utils/formatDate.js';
+
 interface Props {
   title: string;
   description: string;
-  date: Date;
+  date?: Date;
   url: string;
-  image?: string;
   tags?: string[];
+  repo?: string;
 }
 
-const { title, description, date, url, image, tags = [] } = Astro.props;
+const { title, description, date, url, tags = [], repo } = Astro.props;
 ---
 
 <article class="card glass-panel glass-panel--card">
-  {image && (
-    <img
-      src={image}
-      alt={title}
-      class="card-image"
-    />
-  )}
   <div class="card-content">
+    {date && (
+      <time datetime={new Date(date).toISOString()}>
+        {formatDate(date)}
+      </time>
+    )}
     <h2>
       <a href={url}>{title}</a>
     </h2>
-    <time datetime={date.toISOString()}>
-      {date.toLocaleDateString('en-us', { year: 'numeric', month: 'short', day: 'numeric' })}
-    </time>
     <p class="description">{description}</p>
-    {tags.length > 0 && (
-      <div class="tags">
-        {tags.map((tag) => (
-          <span class="tag">{tag}</span>
-        ))}
+    {(tags.length > 0 || repo) && (
+      <div class="card-footer">
+        {tags.length > 0 && (
+          <div class="tags">
+            {tags.map((tag) => (
+              <span class="tag">{tag}</span>
+            ))}
+          </div>
+        )}
+        {repo && (
+          <a
+            class="card-repo"
+            href={repo}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${title} on GitHub (opens in a new tab)`}
+          >
+            GitHub ↗
+          </a>
+        )}
       </div>
     )}
   </div>
@@ -40,71 +52,102 @@ const { title, description, date, url, image, tags = [] } = Astro.props;
 <style>
   /* Fill comes from .glass-panel--card in global.css. */
   .card {
+    display: flex;
+    flex-direction: column;
+    position: relative;
     overflow: hidden;
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   }
 
-  .card:hover {
+  .card:hover,
+  .card:focus-within {
     transform: translateY(-4px);
     box-shadow: var(--glass-inset), var(--glass-shadow-hover);
     border-color: var(--color-accent);
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .card:hover {
+    .card:hover,
+    .card:focus-within {
       transform: none;
     }
   }
 
-  .card-image {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-  }
-
   .card-content {
-    padding: 1.25rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-5);
   }
 
   .card-content h2 {
-    margin: 0 0 0.5rem 0;
+    margin: 0 0 var(--space-2);
     font-size: 1.25rem;
   }
 
   .card-content h2 a {
-    color: var(--color-accent);
+    color: var(--color-text);
     text-decoration: none;
     transition: color 0.2s ease;
   }
 
-  .card-content h2 a:hover {
-    color: var(--color-text);
+  /* The title link covers the whole card, so the lift on hover is honest:
+     clicking anywhere activates the same destination. */
+  .card-content h2 a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
   }
 
+  .card:hover .card-content h2 a,
+  .card:focus-within .card-content h2 a {
+    color: var(--color-accent);
+  }
+
+  /* Date first gives every card in a row a shared baseline; the title follows. */
   time {
+    display: block;
+    margin-bottom: var(--space-2);
     color: var(--color-text-secondary);
+    font-family: var(--font-mono);
     font-size: 0.85rem;
   }
 
   .description {
-    margin: 0.75rem 0;
+    margin: var(--space-3) 0;
     color: var(--color-text-secondary);
     font-size: 0.9rem;
     line-height: 1.6;
   }
 
+  /* Footer sits at the card's bottom edge so tag rows line up across a row,
+     regardless of how long each description is. */
+  .card-footer {
+    margin-top: auto;
+    padding-top: var(--space-3);
+  }
+
   .tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 1rem;
+    gap: var(--space-2);
+    margin-top: 0;
   }
 
-  .tag {
-    background-color: var(--color-bg-tag);
-    color: var(--color-text-tag);
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.25rem;
-    font-size: 0.8rem;
+  /* Sits above the title link's full-card overlay. */
+  .card-repo {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding-top: var(--space-2);
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+    font-weight: 500;
+  }
+
+  .card-repo:hover {
+    color: var(--color-accent);
   }
 </style>
