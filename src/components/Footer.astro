@@ -93,6 +93,21 @@ const socialLinks = [
     }
   }
 
+  /* Short viewports need the footer to stay inside the landing screen. */
+  @media (max-height: 60rem) {
+    .footer {
+      padding-block: var(--space-2);
+    }
+
+    .footer-content {
+      gap: var(--space-1);
+    }
+
+    .copyright {
+      font-size: 0.8rem;
+    }
+  }
+
   @media (max-width: 768px) {
     .footer {
       padding-block: var(--space-5);

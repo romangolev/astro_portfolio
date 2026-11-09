@@ -129,4 +129,12 @@ const person = {
     position: relative;
     z-index: 1;
   }
+
+  /* The landing page is a single screen: center its two bands in the space
+     between the header and footer instead of pinning them to the top. */
+  .main-content:has(.hero) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 </style>
