@@ -343,9 +343,9 @@ const posts = (await getCollection('posts'))
     color: var(--color-text-secondary);
   }
 
-  /* Desktop keeps the three newest posts on one row so the landing page reads
-     as a single screen instead of a scrolling list. */
-  @media (min-width: 64rem) {
+  /* Three newest posts share one row from tablet up, so the landing page reads
+     as a single screen rather than a list. */
+  @media (min-width: 40rem) {
     .writing-list {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -364,9 +364,188 @@ const posts = (await getCollection('posts'))
     }
   }
 
-  /* Short desktop viewports: tighten the vertical rhythm so the hero, selected
-     work, writing and footer stay inside one screen. */
-  @media (min-width: 64rem) and (max-height: 60rem) {
+  /* Phone landing: keep the identity, selected work and latest writing inside
+     one screen by dropping the secondary metadata from the work teaser. */
+  @media (max-width: 47.999rem) {
+    .hero {
+      grid-template-columns: 1fr;
+      gap: var(--space-3);
+      margin-block: var(--space-2);
+    }
+
+    .hero-name {
+      font-size: clamp(2.1rem, 9vw, 2.75rem);
+    }
+
+    .hero-role {
+      margin-bottom: var(--space-1);
+    }
+
+    .hero-location {
+      margin-bottom: var(--space-3);
+    }
+
+    .hero-summary {
+      font-size: .9rem;
+      line-height: 1.5;
+      margin-bottom: var(--space-3);
+    }
+
+    .selected-feature {
+      grid-template-columns: 1fr;
+      gap: var(--space-1);
+    }
+
+    .selected-cover,
+    .selected-monogram,
+    .selected-description,
+    .selected-body .tag-list,
+    .selected-also {
+      display: none;
+    }
+
+    .selected-repo {
+      min-height: 28px;
+      margin-bottom: 0;
+    }
+
+    .more-link {
+      min-height: 28px;
+      margin-top: var(--space-1);
+    }
+
+    .writing {
+      padding-top: var(--space-3);
+    }
+
+    .writing-list li {
+      padding: var(--space-1) 0;
+    }
+
+    /* A one-line teaser keeps the three newest posts inside the phone screen;
+       the full titles remain on /posts. */
+    .writing-title {
+      width: 100%;
+      min-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .section-label {
+      margin-bottom: var(--space-2);
+    }
+  }
+
+  @media (max-width: 24rem) {
+    .hero-summary {
+      font-size: .85rem;
+      line-height: 1.45;
+    }
+
+    .selected-repo {
+      display: none;
+    }
+  }
+
+  /* Short phones: drop the writing teaser first, then the work teaser on the
+     smallest screens, so the profile still owns one screen. */
+  @media (max-width: 47.999rem) and (max-height: 45rem) {
+    .writing {
+      display: none;
+    }
+  }
+
+  @media (max-width: 22rem) and (max-height: 40rem) {
+    .selected {
+      display: none;
+    }
+  }
+
+  /* Shorter desktop windows drop the writing teaser before the hero and work
+     do; the Posts link in the header still reaches the archive. */
+  @media (min-width: 64rem) and (max-width: 68rem) and (max-height: 45rem) {
+    .writing {
+      display: none;
+    }
+  }
+
+  @media (min-width: 64rem) and (max-height: 42rem) {
+    .writing {
+      display: none;
+    }
+  }
+
+  /* Very short desktop windows keep only the profile and actions. */
+  @media (min-width: 64rem) and (max-height: 32rem) {
+    .hero {
+      grid-template-columns: 1fr;
+      margin-block: 0;
+    }
+
+    .selected,
+    .hero-location {
+      display: none;
+    }
+
+    .hero-role {
+      margin-bottom: 0;
+    }
+
+    .hero-summary {
+      font-size: .9rem;
+      line-height: 1.5;
+      margin-bottom: var(--space-2);
+    }
+  }
+
+  /* Landscape phones: the profile and its two actions are the home screen. */
+  @media (max-height: 30rem) {
+    .hero {
+      grid-template-columns: 1fr;
+      margin-block: var(--space-2);
+    }
+
+    .selected,
+    .writing,
+    .hero-location,
+    .hero-summary {
+      display: none;
+    }
+
+    .hero-role {
+      margin-bottom: var(--space-3);
+    }
+  }
+
+  /* Tablet: two-column hero, featured project stacked below its cover. */
+  @media (min-width: 48rem) and (max-width: 64rem) {
+    .selected-feature {
+      grid-template-columns: 1fr;
+      align-items: start;
+      gap: var(--space-3);
+    }
+
+    .selected-cover,
+    .selected-monogram {
+      width: 100%;
+      max-width: 240px;
+    }
+  }
+
+  /* Desktop: cover beside the text. */
+  @media (min-width: 64.0625rem) {
+    .selected-feature {
+      grid-template-columns: 180px minmax(0, 1fr);
+    }
+
+    .selected-cover {
+      width: 180px;
+    }
+  }
+
+  /* Short viewports: tighten the vertical rhythm so the home stays on screen. */
+  @media (min-width: 48rem) and (max-height: 64rem) {
     .hero {
       gap: var(--space-5);
       margin-block: var(--space-3);
@@ -405,78 +584,6 @@ const posts = (await getCollection('posts'))
     .more-link {
       min-height: 28px;
       margin-top: var(--space-2);
-    }
-  }
-
-  @media (max-width: 30rem) {
-    .selected-feature {
-      grid-template-columns: 1fr;
-      gap: var(--space-3);
-    }
-
-    .selected-cover {
-      width: 100%;
-      max-width: 260px;
-    }
-
-    .selected-body .tag-list {
-      justify-content: flex-start;
-    }
-  }
-
-  /* Tablet: the featured band is wide enough to give the cover a real column
-     and let the text breathe beside it. A fixed 240px track stops the cover
-     from ballooning at 1024. */
-  @media (min-width: 48rem) and (max-width: 64rem) {
-    .selected-feature {
-      grid-template-columns: 240px minmax(0, 1fr);
-      align-items: center;
-    }
-
-    .selected-cover,
-    .selected-monogram {
-      width: 100%;
-    }
-
-    .selected-cover {
-      max-width: 240px;
-    }
-  }
-
-  /* Narrow desktop: the hero stays two-column, so the featured project stacks
-     cover-over-text instead of squeezing a text track. */
-  @media (min-width: 60rem) and (max-width: 64rem) {
-    .selected-feature {
-      grid-template-columns: 1fr;
-      align-items: start;
-    }
-
-    .selected-cover,
-    .selected-monogram {
-      width: 100%;
-      max-width: 240px;
-    }
-  }
-
-  /* Desktop: a slightly larger cover track keeps the 16:9 thumbnail legible.
-     Starts just past 64rem so 1024 inherits the tablet layout instead of
-     pairing a single-column hero with the desktop cover track. */
-  @media (min-width: 64.0625rem) {
-    .selected-feature {
-      grid-template-columns: 180px minmax(0, 1fr);
-    }
-
-    .selected-cover {
-      width: 180px;
-    }
-  }
-
-  @media (max-width: 60rem) {
-    .hero {
-      grid-template-columns: 1fr;
-      gap: var(--space-6);
-      margin-top: var(--space-7);
-      margin-bottom: var(--space-7);
     }
   }
 </style>
